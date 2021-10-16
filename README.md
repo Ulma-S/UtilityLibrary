@@ -56,7 +56,7 @@ Unity向けの汎用ライブラリです.
   
   //MonoBehaviourを継承する場合
   //例) GameManager.cs
-  //例えばGameManager Componentがシーン上の複数のGameObjectにアタッチされている場合、自動的に1つになるよう破棄されます.
+  //例) GameManager Componentがシーン上の複数のGameObjectにアタッチされている場合、1つになるよう破棄されます.
   public class GameManager : SingletonMonoBehaviour<GameManager> {}
   
   //MonoBehaviourが不要な場合
@@ -75,6 +75,7 @@ Unity向けの汎用ライブラリです.
   //EStageID.cs
   public enum EStageID{
       None,
+      //以下は自由に定義してください.
       Title,
       Game,
   }
@@ -105,7 +106,7 @@ Unity向けの汎用ライブラリです.
   
 ### UIFadeManager
 - 概要<br>
-画面のフェード機能を提供します.<br>
+  画面のフェード機能を提供します.<br>
 
 - 準備<br>
   1. 常駐SceneにUIFadeManagerプレハブを配置します.
@@ -142,3 +143,112 @@ Unity向けの汎用ライブラリです.
   };
   UIFadeManager.Instance.FadeOut();
   ```
+  
+### BgmManager
+- 概要<br>
+  BGMの再生機能を提供します.
+    
+- 準備<br>
+  
+  1. EBgmID.csが存在しない場合は作成し、以下のように定義します.<br>
+     (本ライブラリのスクリプトを全てインポートする場合は既に存在するため、列挙要素の追加のみ行ってください.)
+     ```c#
+     //EBgmID.cs
+     public enum EBgmID{
+         None,
+         //以下は自由に定義してください.
+         Title,
+         Game,
+     }
+  2. 常駐シーンにBgmManagerプレハブを配置します.
+  3. BgmManagerプレハブのBgmManager ComponentのBgmDatasに、対応するIDとAudioClipを設定します.
+    
+- 使い方<br>
+  ```c#
+  using namespace RitsGameSeminar.Sound;
+  //音楽の再生.
+  //例) Game曲の再生.
+  BgmManager.Instance.Play(EBgmID.Game);
+  
+  //再生を終了する.
+  BgmManager.Instance.Stop();
+  
+  //一時停止する.
+  BgmManager.Instance.Pause();
+  
+  //再開する.
+  BgmManager.Instance.Resume();
+  
+  //フェードインで再生する.
+  //例) Game曲の再生.
+  BgmManager.Instance.FadeIn(EBgmID.Game);
+  //フェード時間(秒)を指定することもできます.
+  BgmManager.Instance.FadeIn(EBgmID.Game, 2f);
+  
+  //フェードアウトで再生を終了する.
+  BgmManager.Instance.FadeOut();
+  //フェード時間(秒)を指定することもできます.
+  BgmManager.Instance.FadeOut(2f);
+  
+  //ミュートする.
+  BgmManager.Instance.Mute();
+  
+  //音量を取得、変更する.
+  //取得
+  Debug.Log(BgmManager.Instance.Volume);
+  //変更 (フェード中は変更できません)
+  BgmManager.Instance.Volume = 0.8f;
+  
+  //現在の再生状態を取得する.
+  //None, Play, Pauseのいずれかが返されます.
+  Debug.Log(BgmManager.Instance.CurrentState);
+  
+  //現在再生されている曲のIDを取得する.
+  Debug.Log(BgmManager.Instance.CurrentBgmID);
+  ```
+
+### SoundEffectManager
+- 概要<br>
+  SEの再生機能を提供します.
+
+- 準備<br>
+  1. ESoundEffectID.csが存在しない場合は作成し、以下のように定義します.<br>
+     (本ライブラリのスクリプトを全てインポートする場合は既に存在するため、列挙要素の追加のみ行ってください.)
+     ```c#
+     //ESoundEffectID.cs
+     public enum ESoundEffectID{
+         None,
+         //以下は自由に定義してください.
+         Hit,
+     }
+  2. 常駐シーンにSeManagerプレハブを配置します.
+  3. SeManagerプレハブのSeManager ComponentのMaxPlayCountに最大同時再生数を設定します.
+  4. SeManagerプレハブのSeManager ComponentのSoundEffectDatasに、対応するIDとAudioClipを設定します.
+
+- 使い方<br>
+  ```c#
+  using namespace RitsGameSeminar.Sound;
+  
+  //SEの再生.
+  //例) ヒット音の再生.
+  SoundEffectManager.Instance.Play(ESoundEffectID.Hit);
+  
+  //全てのSEの再生を終了.
+  SoundEffectManager.Instance.StopAll();
+  
+  //全てのSEを一時停止.
+  SoundEffectManager.Instance.PauseAll();
+  
+  //全てのSEを再開.
+  SoundEffectManager.Instance.ResumeAll();
+  
+  //音量の取得、変更.
+  //取得
+  Debug.Log(SoundEffectManager.Instance.Volume);
+  //変更
+  SoundEffectManager.Instance.Volume = 0.8f;
+  ```
+  
+### VisualEffectManager
+- 概要<br>
+  視覚エフェクトの再生機能を提供します.
