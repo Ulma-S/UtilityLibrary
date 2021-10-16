@@ -22,6 +22,7 @@ namespace RitsGameSeminar.Sample {
         //参照を注入するメソッド.
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         public static void Inject() {
+            //IResourceProviderに対応する実体の登録.
             ServiceLocator.Register<IResourceProvider>(new DebugResourceProvider());
             ServiceLocator.Resolve<IResourceProvider>().RegisterResource<PlayerStatus>(EResourceID.PlayerStatus, "PlayerStatus");
         }

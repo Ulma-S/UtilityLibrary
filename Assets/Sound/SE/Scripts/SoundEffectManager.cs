@@ -61,6 +61,15 @@ namespace RitsGameSeminar.Sound {
         }
 
         /// <summary>
+        /// 全てのSEの再生を終了するメソッド.
+        /// </summary>
+        public void StopAll() {
+            foreach (var audioSource in m_audioSources) {
+                audioSource.Stop();
+            }
+        }
+
+        /// <summary>
         /// 全てのSEを一時停止するメソッド.
         /// </summary>
         public void PauseAll() {
