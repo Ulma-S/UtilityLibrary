@@ -336,7 +336,7 @@ Unity向けの汎用ライブラリです.
          //一部省略
          public override void OnUpdate() {
              //左右入力が入ったらRun Stateに遷移.
-             if(Mathf.Abs() > 0){
+             if(Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0){
                  stateMachine.ChangeState(EPlayerTaskType.Run);
              }
          }
