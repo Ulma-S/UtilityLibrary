@@ -2,6 +2,7 @@
 ## 本リポジトリについて
 Unity向けの汎用ライブラリです.
 - [常駐Scene](#常駐Scene)
+- [拡張メソッド](#拡張メソッド)
 1. [Singleton](#Singleton)
 2. [SceneManager](#SceneManager) (複数Sceneの遷移)
 3. [UIFadeManager](#UIFadeManager) (画面のフェード)
@@ -47,6 +48,33 @@ Unity向けの汎用ライブラリです.
     ```
     配置は任意の場所で結構です.
     以上により、実行時に自動で常駐Sceneを読み込むようになります.
+    
+<a id="拡張メソッド"></a>
+### 拡張メソッド
+- 概要<br>
+  既存のクラスに外部からメソッドを追加する仕組みです.<br>
+  本ライブラリではUnityの既存クラスをいくつか拡張しています.
+
+- 作り方<br>
+  ```c#
+  //例) Transformクラスを拡張する.
+  //    positionの各要素をそれぞれ変更できるようにする.
+  //TransformExtension.cs
+  public class TransformExtension {
+      public static void SetPositionX(this Transform self, float value) {
+          var position = self.transform.position;
+          position.x = value;
+          self.transform = position;
+      }
+      //以下略
+  } 
+  ```
+  
+- 使い方<br>
+  ```c#
+  //例) 座標のx成分のみ設定する.
+  transform.SetPositionX(2f);
+  ```
 
 <a id="Singleton"></a>
 ### Singleton / SingletonMonoBehaviour
@@ -348,7 +376,31 @@ Unity向けの汎用ライブラリです.
      ```
 <a id="TaskSystem"></a>
 ### TaskSystem
+- 概要<br>
+  Taskを単位としてAIを制御する仕組みを提供します.
 
+- 使い方<br>
+  1. Taskの種類を示す列挙型を作成します.
+     ```c#
+     //例) 敵キャラクターのTaskがMove, Attack, PowerUpの場合
+     public enum EEnemyTaskType{
+         None,  //必ず記述してください.
+         Move,
+         Attack,
+         PowerUp,
+     }
+     ```
+  2. それぞれのTaskに対応するクラスを作成します.
+     ```c#
+     using namespace RitsGameSeminar.AI;
+     
+     //例) 敵キャラクターのMove Task
+     //    必ずITask<T>を実装してください.
+     public class EnemyMoveTask : ITask<EEnemyTaskType> {
+         
+     }
+     ```
+  
 <a id="ServiceLocator"></a>
 ### ServiceLocator
 
