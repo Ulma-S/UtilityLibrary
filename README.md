@@ -160,8 +160,8 @@ Unity向けの汎用ライブラリです.
          Title,
          Game,
      }
-  2. 常駐シーンにBgmManagerプレハブを配置します.
-  3. BgmManagerプレハブのBgmManager ComponentのBgmDatasに、対応するIDとAudioClipを設定します.
+  2. 常駐シーンにBGMManagerプレハブを配置します.
+  3. BGMManagerプレハブのBgmManager ComponentのBgmDatasに、対応するIDとAudioClipを設定します.
     
 - 使い方<br>
   ```c#
@@ -221,9 +221,9 @@ Unity向けの汎用ライブラリです.
          //以下は自由に定義してください.
          Hit,
      }
-  2. 常駐シーンにSeManagerプレハブを配置します.
-  3. SeManagerプレハブのSeManager ComponentのMaxPlayCountに最大同時再生数を設定します.
-  4. SeManagerプレハブのSeManager ComponentのSoundEffectDatasに、対応するIDとAudioClipを設定します.
+  2. 常駐シーンにSEManagerプレハブを配置します.
+  3. SEManagerプレハブのSeManager ComponentのMaxPlayCountに最大同時再生数を設定します.
+  4. SEManagerプレハブのSeManager ComponentのSoundEffectDatasに、対応するIDとAudioClipを設定します.
 
 - 使い方<br>
   ```c#
@@ -252,3 +252,93 @@ Unity向けの汎用ライブラリです.
 ### VisualEffectManager
 - 概要<br>
   視覚エフェクトの再生機能を提供します.
+
+- 準備<br>
+  1. EVisualEffectID.csが存在しない場合は作成し、以下のように定義します.<br>
+     (本ライブラリのスクリプトを全てインポートする場合は既に存在するため、列挙要素の追加のみ行ってください.)
+     ```c#
+     //EVisualEffectID.cs
+     public enum EVisualEffectID{
+         None,
+         //以下は自由に定義してください.
+         Hit,
+     }
+  2. 常駐シーンにVFXManagerプレハブを配置します.
+  3. VFXManagerプレハブのVisualEfffectManager ComponentのVisualEffectDatasに、対応するIDとエフェクトを設定します.
+
+- 使い方<br>
+  ```c#
+  using namespace RitsGameSeminar.VFX;
+  
+  //エフェクトを再生.
+  //例) ヒットエフェクトの再生.
+  VisualEffectManager.Instance.Play(EVisualEffectID.Hit);
+  ```
+
+### StateMachine
+- 概要<br>
+  状態遷移を管理するための機能を提供します.
+  
+- 使い方<br>
+  1. 状態の種類を示す列挙型を作成します.
+     ```c#
+     //例) プレイヤーキャラクターの状態がIdle, Run, Jumpの場合
+     public enum EPlayerStateType{
+         None,  //必ず記述してください.
+         Idle,
+         Run,
+         Jump,
+     }
+     ```
+  2. それぞれの状態に対応するクラスを作成します.
+     ```c#
+     using namespace RitsGameSeminar.StateMachine;
+     
+     //例) プレイヤーキャラクターのIdle State
+     //    必ずStateBaseクラスを継承してください.
+     public class PlayerIdleState : StateBase<EPlayerStateType> {
+         public PlayerIdleState(StateMachine<EPlayerStateType> stateMachine) : base(stateMachine) {}
+         public override EPlayerStateType StateType { get; protected set; } = EPlayerStateType.Idle;
+         
+         public override void OnEnter() {}
+         public override void OnUpdate() {}
+         public override void OnExit() {}
+     }
+     
+     //同様に他のクラスも作成します.
+     //中身は省略.
+     public class PlayerRunState : StateBase<EPlayerStateType> {}
+     public class PlayerJumpState : StateBase<EPlayerStateType> {}
+     ```
+  3. 2で作成したクラスをStateMachineに登録します.
+     ```c#
+     using namespace RitsGameSeminar.StateMachine;
+     
+     public class PlayerController : MonoBehaviour {
+         private StateMachine<EPlayerStateType> m_stateMachine;
+         
+         private void Start() {
+             m_stateMachine = new StateMachine<EPlayerStateType>(gameObject);
+             
+             //Stateの登録.
+             m_stateMachine.RegisterState(new PlayerIdleState(m_stateMachine));
+             m_stateMachine.RegisterState(new PlayerRunState(m_stateMachine));
+             m_stateMachine.RegisterState(new PlayerJumpState(m_stateMachine));
+             
+             //最初のStateを設定.
+             m_stateMachine.ChangeState(EPlayerStateType.Idle);
+         }
+     }
+     
+     //別の状態に遷移したい場合
+     //例) Idle -> Run
+     public class PlayerIdleState : StateBase<EPlayerStateType> {
+         //一部省略
+         public override void OnUpdate() {
+             //左右入力が入ったらRun Stateに遷移.
+             if(Mathf.Abs() > 0){
+                 stateMachine.ChangeState(EPlayerTaskType.Run);
+             }
+         }
+     }
+     ```
