@@ -11,13 +11,13 @@ namespace RitsGameSeminar.Sample {
         public bool IsHitGround { get; private set; } = false;
         
         private void OnCollisionEnter(Collision other) {
-            if (other.gameObject.CompareTag("Ground")) {
+            if (other.gameObject.CompareTag("Ground") || other.gameObject.CompareTag("Enemy")) {
                 IsHitGround = true;
             }
         }
 
         private void OnCollisionExit(Collision other) {
-            if (other.gameObject.CompareTag("Ground")) {
+            if (other.gameObject.CompareTag("Ground") || other.gameObject.CompareTag("Enemy")) {
                 IsHitGround = false;
             }
         }

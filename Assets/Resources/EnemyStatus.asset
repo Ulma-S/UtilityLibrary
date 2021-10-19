@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8ab3ddf5d0f1aa498b62c87753014d3, type: 3}
-  m_Name: PlayerStatus
+  m_Script: {fileID: 11500000, guid: 68fdef1068ffd7e4b85370e661503dc3, type: 3}
+  m_Name: EnemyStatus
   m_EditorClassIdentifier: 
-  MoveSpeed: 4
-  JumpForce: 1100
+  MoveSpeed: 2.5
+  AttackPower: 10
+  TaskDuration: 2.5

@@ -24,7 +24,10 @@ namespace RitsGameSeminar.Sample {
         public static void Inject() {
             //IResourceProviderに対応する実体の登録.
             ServiceLocator.Register<IResourceProvider>(new DebugResourceProvider());
+            
+            //実態の登録.
             ServiceLocator.Resolve<IResourceProvider>().RegisterResource<PlayerStatus>(EResourceID.PlayerStatus, "PlayerStatus");
+            ServiceLocator.Resolve<IResourceProvider>().RegisterResource<EnemyStatus>(EResourceID.EnemyStatus, "EnemyStatus");
         }
     }
 }
