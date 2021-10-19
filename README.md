@@ -1,21 +1,24 @@
 # UtilityLibrary
 ## 本リポジトリについて
 Unity向けの汎用ライブラリです.
-1. Singleton
-2. SceneManager (複数Sceneの遷移)
-3. UIFadeManager (画面のフェード)
-4. BgmManager (BGMの再生機能管理)
-5. SoundEffectManager (SEの再生機能管理)
-6. VisualEffectManager (VFXの再生機能管理)
+- [常駐Scene](#常駐Scene)
+- [拡張メソッド](#拡張メソッド)
+1. [Singleton](#Singleton)
+2. [SceneManager](#SceneManager) (複数Sceneの遷移)
+3. [UIFadeManager](#UIFadeManager) (画面のフェード)
+4. [BgmManager](#BgmManager) (BGMの再生機能管理)
+5. [SoundEffectManager](#SoundEffectManager) (SEの再生機能管理)
+6. [VisualEffectManager](#VisualEffectManager) (VFXの再生機能管理)
 
 以下は少し難しいかもしれません.<br>
 
-7. StateMachine (状態遷移管理)
-8. TaskSystem (ルールベースAIの線形的な行動制御)
-9. ServiceLocator (簡易的な依存性の注入)
-11. ResourceProvider (動的リソースの管理)
+7. [StateMachine](#StateMachine) (状態遷移管理)
+8. [TaskSystem](#TaskSystem) (ルールベースAIの線形的な行動制御)
+9. [ServiceLocator](#ServiceLocator) (簡易的な依存性の注入)
+10. [ResourceProvider](#ResourceProvider) (動的リソースの管理)
 
 ## 詳細説明
+<a id="常駐Scene"></a>
 ### 常駐Sceneについて
 - 概要<br>
   Unityでは複数のSceneを同時に読み込むことができます.<br>
@@ -45,7 +48,35 @@ Unity向けの汎用ライブラリです.
     ```
     配置は任意の場所で結構です.
     以上により、実行時に自動で常駐Sceneを読み込むようになります.
+    
+<a id="拡張メソッド"></a>
+### 拡張メソッド
+- 概要<br>
+  既存のクラスに外部からメソッドを追加する仕組みです.<br>
+  本ライブラリではUnityの既存クラスをいくつか拡張しています.
 
+- 作り方<br>
+  ```c#
+  //例) Transformクラスを拡張する.
+  //    positionの各要素をそれぞれ変更できるようにする.
+  //TransformExtension.cs
+  public class TransformExtension {
+      public static void SetPositionX(this Transform self, float value) {
+          var position = self.transform.position;
+          position.x = value;
+          self.transform = position;
+      }
+      //以下略
+  } 
+  ```
+  
+- 使い方<br>
+  ```c#
+  //例) 座標のx成分のみ設定する.
+  transform.SetPositionX(2f);
+  ```
+
+<a id="Singleton"></a>
 ### Singleton / SingletonMonoBehaviour
 - 概要<br>
   Scene全体で対象クラスのインスタンスが1つのみであることを保証します。<br>
@@ -63,7 +94,7 @@ Unity向けの汎用ライブラリです.
   //例) CsvReader.cs
   public class CsvReader : Singleton<CsvReader> {}
   ```
-  
+<a id="SceneManager"></a>
 ### SceneManager
 - 概要<br>
   Stage IDに対応するSceneの遷移機能を提供します.<br>
@@ -104,6 +135,7 @@ Unity向けの汎用ライブラリです.
 - 注意<br>
   それぞれのSceneListでは一番上に記述されたSceneがActive Sceneとして設定されます.
   
+<a id="UIFadeManager"></a>
 ### UIFadeManager
 - 概要<br>
   画面のフェード機能を提供します.<br>
@@ -143,7 +175,7 @@ Unity向けの汎用ライブラリです.
   };
   UIFadeManager.Instance.FadeOut();
   ```
-  
+<a id="BgmManager"></a>  
 ### BgmManager
 - 概要<br>
   BGMの再生機能を提供します.
@@ -160,8 +192,8 @@ Unity向けの汎用ライブラリです.
          Title,
          Game,
      }
-  2. 常駐シーンにBgmManagerプレハブを配置します.
-  3. BgmManagerプレハブのBgmManager ComponentのBgmDatasに、対応するIDとAudioClipを設定します.
+  2. 常駐シーンにBGMManagerプレハブを配置します.
+  3. BGMManagerプレハブのBgmManager ComponentのBgmDatasに、対応するIDとAudioClipを設定します.
     
 - 使い方<br>
   ```c#
@@ -206,7 +238,7 @@ Unity向けの汎用ライブラリです.
   //現在再生されている曲のIDを取得する.
   Debug.Log(BgmManager.Instance.CurrentBgmID);
   ```
-
+<a id="SoundEffectManager"></a>
 ### SoundEffectManager
 - 概要<br>
   SEの再生機能を提供します.
@@ -221,9 +253,9 @@ Unity向けの汎用ライブラリです.
          //以下は自由に定義してください.
          Hit,
      }
-  2. 常駐シーンにSeManagerプレハブを配置します.
-  3. SeManagerプレハブのSeManager ComponentのMaxPlayCountに最大同時再生数を設定します.
-  4. SeManagerプレハブのSeManager ComponentのSoundEffectDatasに、対応するIDとAudioClipを設定します.
+  2. 常駐シーンにSEManagerプレハブを配置します.
+  3. SEManagerプレハブのSeManager ComponentのMaxPlayCountに最大同時再生数を設定します.
+  4. SEManagerプレハブのSeManager ComponentのSoundEffectDatasに、対応するIDとAudioClipを設定します.
 
 - 使い方<br>
   ```c#
@@ -248,7 +280,129 @@ Unity向けの汎用ライブラリです.
   //変更
   SoundEffectManager.Instance.Volume = 0.8f;
   ```
-  
+<a id="VisualEffectManager"></a>
 ### VisualEffectManager
 - 概要<br>
   視覚エフェクトの再生機能を提供します.
+
+- 準備<br>
+  1. EVisualEffectID.csが存在しない場合は作成し、以下のように定義します.<br>
+     (本ライブラリのスクリプトを全てインポートする場合は既に存在するため、列挙要素の追加のみ行ってください.)
+     ```c#
+     //EVisualEffectID.cs
+     public enum EVisualEffectID{
+         None,
+         //以下は自由に定義してください.
+         Hit,
+     }
+  2. 常駐シーンにVFXManagerプレハブを配置します.
+  3. VFXManagerプレハブのVisualEfffectManager ComponentのVisualEffectDatasに、対応するIDとエフェクトを設定します.
+
+- 使い方<br>
+  ```c#
+  using namespace RitsGameSeminar.VFX;
+  
+  //エフェクトを再生.
+  //例) ヒットエフェクトの再生.
+  VisualEffectManager.Instance.Play(EVisualEffectID.Hit);
+  ```
+<a id="StateMachine"></a>
+### StateMachine
+- 概要<br>
+  状態遷移を管理するための機能を提供します.
+  
+- 使い方<br>
+  1. 状態の種類を示す列挙型を作成します.
+     ```c#
+     //例) プレイヤーキャラクターの状態がIdle, Run, Jumpの場合
+     public enum EPlayerStateType{
+         None,  //必ず記述してください.
+         Idle,
+         Run,
+         Jump,
+     }
+     ```
+  2. それぞれの状態に対応するクラスを作成します.
+     ```c#
+     using namespace RitsGameSeminar.StateMachine;
+     
+     //例) プレイヤーキャラクターのIdle State
+     //    必ずStateBaseクラスを継承してください.
+     public class PlayerIdleState : StateBase<EPlayerStateType> {
+         public PlayerIdleState(StateMachine<EPlayerStateType> stateMachine) : base(stateMachine) {}
+         public override EPlayerStateType StateType { get; protected set; } = EPlayerStateType.Idle;
+         
+         public override void OnEnter() {}
+         public override void OnUpdate() {}
+         public override void OnExit() {}
+     }
+     
+     //同様に他のクラスも作成します.
+     //中身は省略.
+     public class PlayerRunState : StateBase<EPlayerStateType> {}
+     public class PlayerJumpState : StateBase<EPlayerStateType> {}
+     ```
+  3. 2で作成したクラスをStateMachineに登録します.
+     ```c#
+     using namespace RitsGameSeminar.StateMachine;
+     
+     public class PlayerController : MonoBehaviour {
+         private StateMachine<EPlayerStateType> m_stateMachine;
+         
+         private void Start() {
+             m_stateMachine = new StateMachine<EPlayerStateType>(gameObject);
+             
+             //Stateの登録.
+             m_stateMachine.RegisterState(new PlayerIdleState(m_stateMachine));
+             m_stateMachine.RegisterState(new PlayerRunState(m_stateMachine));
+             m_stateMachine.RegisterState(new PlayerJumpState(m_stateMachine));
+             
+             //最初のStateを設定.
+             m_stateMachine.ChangeState(EPlayerStateType.Idle);
+         }
+     }
+     
+     //別の状態に遷移したい場合
+     //例) Idle -> Run
+     public class PlayerIdleState : StateBase<EPlayerStateType> {
+         //一部省略
+         public override void OnUpdate() {
+             //左右入力が入ったらRun Stateに遷移.
+             if(Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0){
+                 stateMachine.ChangeState(EPlayerTaskType.Run);
+             }
+         }
+     }
+     ```
+<a id="TaskSystem"></a>
+### TaskSystem
+- 概要<br>
+  Taskを単位としてAIを制御する仕組みを提供します.
+
+- 使い方<br>
+  1. Taskの種類を示す列挙型を作成します.
+     ```c#
+     //例) 敵キャラクターのTaskがMove, Attack, PowerUpの場合
+     public enum EEnemyTaskType{
+         None,  //必ず記述してください.
+         Move,
+         Attack,
+         PowerUp,
+     }
+     ```
+  2. それぞれのTaskに対応するクラスを作成します.
+     ```c#
+     using namespace RitsGameSeminar.AI;
+     
+     //例) 敵キャラクターのMove Task
+     //    必ずITask<T>を実装してください.
+     public class EnemyMoveTask : ITask<EEnemyTaskType> {
+         
+     }
+     ```
+  
+<a id="ServiceLocator"></a>
+### ServiceLocator
+
+<a id="ResourceProvider"></a>
+### ResourceProvider
