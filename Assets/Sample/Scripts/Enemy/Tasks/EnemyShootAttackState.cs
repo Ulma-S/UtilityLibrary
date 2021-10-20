@@ -13,7 +13,7 @@ namespace RitsGameSeminar.Sample {
 
         public override void OnEnter() {
             m_isFinished = false;
-            CoroutineHandler.Instance.StartStaticCoroutine(ShootCoroutine());
+            CoroutineManager.Instance.StartDelegatedCoroutine(ShootCoroutine());
         }
 
         public override bool OnUpdate() {

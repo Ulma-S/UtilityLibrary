@@ -15,7 +15,7 @@ namespace RitsGameSeminar.Sample {
         
         public override void OnEnter() {
             m_isFinished = false;
-            CoroutineHandler.Instance.StartStaticCoroutine(JumpCoroutine());
+            CoroutineManager.Instance.StartDelegatedCoroutine(JumpCoroutine());
         }
 
         public override bool OnUpdate() {
@@ -45,7 +45,7 @@ namespace RitsGameSeminar.Sample {
                     break;
                 }
             }
-            CoroutineHandler.Instance.StartStaticCoroutine(FireEffectCoroutine());
+            CoroutineManager.Instance.StartDelegatedCoroutine(FireEffectCoroutine());
         }
 
         private IEnumerator FireEffectCoroutine() {

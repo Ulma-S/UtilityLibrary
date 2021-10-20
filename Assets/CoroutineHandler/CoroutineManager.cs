@@ -5,13 +5,13 @@ namespace RitsGameSeminar {
     /// <summary>
     /// 委譲されたコルーチンの実行を管理するクラス.
     /// </summary>
-    public class CoroutineHandler : SingletonMonoBehaviour<CoroutineHandler> {
+    public class CoroutineManager : SingletonMonoBehaviour<CoroutineManager> {
         /// <summary>
         /// コルーチンの開始.
         /// </summary>
         /// <param name="coroutine"></param>
         /// <returns></returns>
-        public Coroutine StartStaticCoroutine(IEnumerator coroutine) {
+        public Coroutine StartDelegatedCoroutine(IEnumerator coroutine) {
             return Instance.StartCoroutine(coroutine);
         }
 
@@ -19,7 +19,7 @@ namespace RitsGameSeminar {
         /// コルーチンの一時停止.
         /// </summary>
         /// <param name="coroutine"></param>
-        public void StopStaticCoroutine(IEnumerator coroutine) {
+        public void StopDelegatedCoroutine(IEnumerator coroutine) {
             Instance.StopCoroutine(coroutine);
         }
     }
