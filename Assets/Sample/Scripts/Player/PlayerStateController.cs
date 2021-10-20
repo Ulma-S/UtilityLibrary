@@ -22,7 +22,6 @@ namespace RitsGameSeminar.Sample {
 
         private void Update() {
             m_stateMachine.Update();
-            Debug.Log(m_stateMachine.CurrentStateType);
         }
     }
 }

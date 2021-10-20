@@ -3,7 +3,8 @@ namespace RitsGameSeminar.Sample {
         public float HorizontalInput { get; }
         public float VerticalInput { get; }
         public bool IsJumpButtonDown { get; }
-        public bool IsShoot { get; }
-        public bool IsShootDown { get; }
+        public bool IsShootButton { get; }
+        public bool IsShootButtonDown { get; }
+        public bool IsEscapeButtonDown { get; }
     }
 }

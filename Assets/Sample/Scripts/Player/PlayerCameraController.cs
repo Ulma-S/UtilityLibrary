@@ -11,7 +11,9 @@ namespace RitsGameSeminar.Sample {
         private void Update() {
             var aim = m_enemy.transform.position - transform.position;
             var rot = Quaternion.LookRotation(aim);
-            transform.rotation = rot;
+            var eulerAngle = rot.eulerAngles;
+            eulerAngle.x = 0f;
+            transform.rotation = Quaternion.Euler(eulerAngle);
         }
     }
 }

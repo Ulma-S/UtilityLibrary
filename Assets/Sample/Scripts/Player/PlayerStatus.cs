@@ -5,6 +5,7 @@ namespace RitsGameSeminar.Sample {
     public class PlayerStatus : ScriptableObject {
         public float MoveSpeed;
         public float JumpForce;
+        public float HP;
         public int MaxBulletCount;
         public float ShootInterval;
         public float BulletSpeed;

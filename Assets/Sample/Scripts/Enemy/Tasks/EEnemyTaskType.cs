@@ -3,7 +3,8 @@ namespace RitsGameSeminar.Sample {
         None,
         Idle,
         Move,
-        Attack,
+        ShockWaveAttack,
+        ShootAttack,
         PowerUp,
     }
 }

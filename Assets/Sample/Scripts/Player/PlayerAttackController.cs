@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace RitsGameSeminar.Sample {
     public class PlayerAttackController : MonoBehaviour {
-        private BulletPool m_bulletPool;
+        private PlayerBulletPool m_playerBulletPool;
         private float m_shootInterval;
         private GameObject m_enemy;
         private IInputProvider m_inputProvider;
 
         private void Start() {
-            m_bulletPool = FindObjectOfType<BulletPool>();
+            m_playerBulletPool = FindObjectOfType<PlayerBulletPool>();
             m_shootInterval = ServiceLocator.Resolve<IResourceProvider>()
                 .LoadResource<PlayerStatus>(EResourceID.PlayerStatus).ShootInterval;
             
@@ -18,7 +18,7 @@ namespace RitsGameSeminar.Sample {
         }
 
         private void Update() {
-            if (m_inputProvider.IsShootDown) {
+            if (m_inputProvider.IsShootButtonDown) {
                 Shoot();
             }
         }
@@ -28,9 +28,9 @@ namespace RitsGameSeminar.Sample {
         }
 
         private IEnumerator ShootCoroutine() {
-            while (m_inputProvider.IsShoot) {
+            while (m_inputProvider.IsShootButton) {
                 var dir = m_enemy.transform.position - transform.position;
-                m_bulletPool.GetNextBullet().Activate(transform.position, dir.normalized);
+                m_playerBulletPool.GetNextBullet().Activate(transform.position, dir.normalized);
                 yield return new WaitForSeconds(m_shootInterval);
             }
         }

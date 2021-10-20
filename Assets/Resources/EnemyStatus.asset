@@ -13,5 +13,11 @@ MonoBehaviour:
   m_Name: EnemyStatus
   m_EditorClassIdentifier: 
   MoveSpeed: 2.5
-  AttackPower: 10
+  WaveAttackPower: 20
+  ShootAttackPower: 10
   TaskDuration: 2.5
+  HP: 1000
+  BulletSpeed: 40
+  BulletInterval: 0.3
+  MaxBulletCount: 20
+  BulletLife: 4

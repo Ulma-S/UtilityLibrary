@@ -2,23 +2,23 @@ using System.Collections;
 using UnityEngine;
 
 namespace RitsGameSeminar.Sample {
-    public class BulletMover : MonoBehaviour {
+    public class EnemyBulletMover : MonoBehaviour {
         [SerializeField] private Rigidbody m_rb;
         [SerializeField] private MeshRenderer m_renderer;
         [SerializeField] private Collider m_collider;
         private float m_bulletSpeed;
         private float m_bulletLife;
-
+        
         private void Start() {
             m_bulletSpeed = ServiceLocator.Resolve<IResourceProvider>()
-                .LoadResource<PlayerStatus>(EResourceID.PlayerStatus).BulletSpeed;
+                .LoadResource<EnemyStatus>(EResourceID.EnemyStatus).BulletSpeed;
 
             m_bulletLife = ServiceLocator.Resolve<IResourceProvider>()
-                .LoadResource<PlayerStatus>(EResourceID.PlayerStatus).BulletLife;
+                .LoadResource<EnemyStatus>(EResourceID.EnemyStatus).BulletLife;
             
             Inactivate();
         }
-
+        
         private IEnumerator SetLifeCoroutine() {
             yield return new WaitForSeconds(m_bulletLife);
             Inactivate();

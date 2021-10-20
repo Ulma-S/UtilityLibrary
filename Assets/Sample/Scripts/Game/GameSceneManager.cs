@@ -5,16 +5,19 @@ using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 
 namespace RitsGameSeminar.Sample {
     public class GameSceneManager : MonoBehaviour {
+        private IInputProvider m_inputProvider;
         private bool m_hasLoaded = false;
-        
+
         private void Start() {
+            m_inputProvider = ServiceLocator.Resolve<IInputProvider>();
+            
             //シーンのロード完了後にフェードインを開始する.
             //ラムダ式という書き方です.
             SceneManager.Instance.OnStageLoadedHandler += () => UIFadeManager.Instance.FadeIn();
         }
 
         private void Update() {
-            if (Input.GetKeyDown(KeyCode.Escape) && !m_hasLoaded) {
+            if (m_inputProvider.IsEscapeButtonDown && !m_hasLoaded) {
                 UIFadeManager.Instance.FadeOut(() => {
                     SceneManager.Instance.LoadStage(EStageID.Title);
                 });

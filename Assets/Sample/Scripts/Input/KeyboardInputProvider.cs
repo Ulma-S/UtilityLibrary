@@ -5,15 +5,17 @@ namespace RitsGameSeminar.Sample {
         public float HorizontalInput { get; private set; }
         public float VerticalInput { get; private set; }
         public bool IsJumpButtonDown { get; private set; }
-        public bool IsShoot { get; private set; }
-        public bool IsShootDown { get; private set; }
+        public bool IsShootButton { get; private set; }
+        public bool IsShootButtonDown { get; private set; }
+        public bool IsEscapeButtonDown { get; private set; }
 
         private void Update() {
             HorizontalInput = Input.GetAxisRaw("Horizontal");
             VerticalInput = Input.GetAxisRaw("Vertical");
             IsJumpButtonDown = Input.GetKeyDown(KeyCode.Space);
-            IsShoot = Input.GetKey(KeyCode.J);
-            IsShootDown = Input.GetKeyDown(KeyCode.J);
+            IsShootButton = Input.GetKey(KeyCode.J);
+            IsShootButtonDown = Input.GetKeyDown(KeyCode.J);
+            IsEscapeButtonDown = Input.GetKeyDown(KeyCode.Escape);
         }
     }
 }
