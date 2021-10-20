@@ -14,8 +14,9 @@ Unity向けの汎用ライブラリです.
 
 7. [StateMachine](#StateMachine) (状態遷移管理)
 8. [TaskSystem](#TaskSystem) (ルールベースAIの線形的な行動制御)
-9. [ServiceLocator](#ServiceLocator) (簡易的な依存性の注入)
-10. [ResourceProvider](#ResourceProvider) (動的リソースの管理)
+9. [CoroutineHandler](#CoroutineHandler) (非MonoBehaviourクラスからコルーチン処理を委譲)
+10. [ServiceLocator](#ServiceLocator) (簡易的な依存性の注入)
+11. [ResourceProvider](#ResourceProvider) (動的リソースの管理)
 
 ## 詳細説明
 <a id="常駐Scene"></a>
@@ -400,7 +401,10 @@ Unity向けの汎用ライブラリです.
          
      }
      ```
-  
+
+<a id="CoroutineHandler"></a>
+### CoroutineHandler
+
 <a id="ServiceLocator"></a>
 ### ServiceLocator
 
