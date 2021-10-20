@@ -12,5 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8ab3ddf5d0f1aa498b62c87753014d3, type: 3}
   m_Name: PlayerStatus
   m_EditorClassIdentifier: 
-  MoveSpeed: 4
-  JumpForce: 1100
+  MoveSpeed: 8
+  JumpForce: 1500
+  MaxBulletCount: 50
+  ShootInterval: 0.1
+  BulletSpeed: 30
+  BulletLife: 4
