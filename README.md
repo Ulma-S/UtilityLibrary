@@ -343,7 +343,7 @@ Unity向けの汎用ライブラリです.
      public class PlayerRunState : StateBase<EPlayerStateType> {}
      public class PlayerJumpState : StateBase<EPlayerStateType> {}
      ```
-  3. 2で作成したクラスをStateMachineに登録します.
+  3. 2で作成したクラスのインスタンスをStateMachineに登録します.
      ```c#
      using namespace RitsGameSeminar.StateMachine;
      
@@ -398,7 +398,70 @@ Unity向けの汎用ライブラリです.
      //例) 敵キャラクターのMove Task
      //    必ずITask<T>を実装してください.
      public class EnemyMoveTask : ITask<EEnemyTaskType> {
+         public EEnemyTaskType TaskType { get; } = EEnemyTaskType.None;
+         public abstract void OnEnter();
+         public abstract void OnUpdate();
+         public abstract void OnExit();
+     }
+     //同様に他のクラスも作成します.
+     //中身は省略.
+     public class EnemyAttackTask {}
+     public class EnemyPowerUpTask {}
+     ```
+  3. 2で作成したクラスのインスタンスをTaskSystemに登録します.
+     ```c#
+     using namespace RitsGameSeminar.AI;
+     
+     public class EnemyTaskController : MonoBehaviour {
+         private ITaskSystem<EEnemyTaskType> m_taskSystem;
          
+         private void Start() {
+             m_taskSystem = new TaskSystem<EEnemyTaskType>();
+             
+             //Taskの登録.
+             m_taskSystem.RegisterTask(new EnemyMoveTask(gameObject));
+             
+             //まとめて登録する際は、以下のように書けます.
+             m_taskSystem.RegisterTask(new ITask<EEnemyTaskType>[] {
+                 new EnemyMoveTask(gameObject),
+                 new EnemyAttackTask(gameObject),
+                 new EnemyPowerUpTask(gameObject),
+             });
+         }
+     }
+     ```
+  4. TaskSystemの実行待ちQueueに実行したいTaskを入れます.
+     ```c#
+     using namespace RitsGameSeminar.AI; 
+     
+     public class EnemyTaskController : MonoBehaviour {
+         //一部省略.         
+         private void Start() {
+             //例) Move Taskを入れる.
+             m_taskSystem.EnqueueTask(EEnemyTaskType.Move);
+             
+             //まとめて入れたい場合は、メソッドチェーンを利用して以下のように書けます.
+             m_taskSystem.EnqueueTask(EEnemyTaskType.Move).EnqueueTask(EEnemyTaskType.Attack);
+         }
+     }
+     ```
+  5. TaskSystemを更新し、必要に応じて実行待ちQueueにTaskを入れます.
+     ```c#
+     using namespace RitsGameSeminar.AI;
+     
+     public class EnemyTaskController : MonoBehaviour {
+         //一部省略.
+         private void Update() {
+             //Taskがすべて完了していたら新たに入れる.
+             if(m_taskSystem.IsEndAllTasks) {
+                 SelectTask();
+             }
+             m_taskSystem.UpdateTask();
+         }
+         
+         //この中で適宜Taskを入れてください.
+         private void SelectTask() {
+         }
      }
      ```
 
