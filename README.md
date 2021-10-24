@@ -456,14 +456,59 @@ Unity向けの汎用ライブラリです.
              if(m_taskSystem.IsEndAllTasks) {
                  SelectTask();
              }
+             //Taskの更新
              m_taskSystem.UpdateTask();
          }
          
          //この中で適宜Taskを入れてください.
          private void SelectTask() {
+             //例
+             m_taskSystem.EnqueueTask(EEneymTask.Move).EnqueueTask(EEnemyTask.Attack);
          }
      }
      ```
+
+- APIリファレンス
+  ```c#
+  //interface ITaskSystem<T>
+  //現在入っているTaskの種類のlist
+  ReadOnlyCollection<T> CurrentTaskList;
+  
+  //現在のTaskの種類
+  T CurrentTaskType;
+  
+  //全てのTaskが終了しているか?
+  bool IsEndAllTasks;
+  
+  //Taskの登録
+  void RegisterTask(ITask<T> task);
+  void RegisterTask(ITask<T>[] tasks);
+  
+  //Taskを実行待ちQueueに入れる
+  ITaskSystem<T> EnqueueTask(T type);
+  
+  //Taskの更新
+  void UpdateTask();
+  
+  //現在のTaskを強制終了する
+  void KillCurrentTask();
+  
+  //現在のTaskを強制終了し、実行待ちQueueを空にする
+  void KillAllTasks();
+  
+  //interface ITask<T>
+  //Taskの種類
+  T TaskType;
+  
+  //開始処理
+  void OnEnter();
+  
+  //更新処理 (trueを返すと終了処理が呼ばれ、Taskを終了する)
+  bool OnUpdate();
+  
+  //終了処理
+  void OnExit();
+  ```
 
 <a id="CoroutineManager"></a>
 ### CoroutineManager
