@@ -101,8 +101,7 @@ Unity向けの汎用ライブラリです.
   Stage IDに対応するSceneの遷移機能を提供します.<br>
   
 - 準備<br>
-  1. EStageID.csが存在しない場合は作成し、以下のように定義します.<br>
-    (本ライブラリのスクリプトを全てインポートする場合は既に存在するため、列挙要素の追加のみ行ってください.)
+  1. EStageID.csを以下のように定義します.<br>
   ```c#
   //EStageID.cs
   public enum EStageID{
@@ -183,8 +182,7 @@ Unity向けの汎用ライブラリです.
     
 - 準備<br>
   
-  1. EBgmID.csが存在しない場合は作成し、以下のように定義します.<br>
-     (本ライブラリのスクリプトを全てインポートする場合は既に存在するため、列挙要素の追加のみ行ってください.)
+  1. EBgmID.csを以下のように定義します.<br>
      ```c#
      //EBgmID.cs
      public enum EBgmID{
@@ -245,8 +243,7 @@ Unity向けの汎用ライブラリです.
   SEの再生機能を提供します.
 
 - 準備<br>
-  1. ESoundEffectID.csが存在しない場合は作成し、以下のように定義します.<br>
-     (本ライブラリのスクリプトを全てインポートする場合は既に存在するため、列挙要素の追加のみ行ってください.)
+  1. ESoundEffectID.csを以下のように定義します.<br>
      ```c#
      //ESoundEffectID.cs
      public enum ESoundEffectID{
@@ -254,6 +251,7 @@ Unity向けの汎用ライブラリです.
          //以下は自由に定義してください.
          Hit,
      }
+     ```
   2. 常駐シーンにSEManagerプレハブを配置します.
   3. SEManagerプレハブのSeManager ComponentのMaxPlayCountに最大同時再生数を設定します.
   4. SEManagerプレハブのSeManager ComponentのSoundEffectDatasに、対応するIDとAudioClipを設定します.
@@ -287,8 +285,7 @@ Unity向けの汎用ライブラリです.
   視覚エフェクトの再生機能を提供します.
 
 - 準備<br>
-  1. EVisualEffectID.csが存在しない場合は作成し、以下のように定義します.<br>
-     (本ライブラリのスクリプトを全てインポートする場合は既に存在するため、列挙要素の追加のみ行ってください.)
+  1. EVisualEffectID.csを以下のように定義します.<br>
      ```c#
      //EVisualEffectID.cs
      public enum EVisualEffectID{
@@ -551,6 +548,8 @@ Unity向けの汎用ライブラリです.
   
 - 使い方<br>
   ```c#
+  using namespace RitsGameSeminar;
+  
   //例) 入力システムを抽象化する.
   //入力のインターフェース
   public interface IInputProvider {
@@ -603,3 +602,33 @@ Unity向けの汎用ライブラリです.
 
 <a id="ResourceProvider"></a>
 ### ResourceProvider
+- 概要<br>
+  様々な動的リソース管理をまとめる仕組みを提供します.
+  (ServiceLocatorと併用することを推奨します)
+
+- 準備<br>
+  1. EResourceID.csを以下のように定義します.
+     ```c#
+     //EResourceID.cs
+     public enum EResourceID {
+         None,  //必ず記述してください.
+         PlayerStatus,
+     }
+     ```
+  2. ServiceLocatorに参照を注入する.
+     ```c#
+     public static class ReferenceInjector {
+         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+         private static void Inject() {
+             ServiceLocator.Register<IResourceProvider>();
+             
+             ServiceLocator.Resolve<IResourceProvider>().RegisterResource<PlayerStatus>(EResourceID.PlayerStatus, "PlayerStatus");
+         }
+     }
+     ```
+
+- 使い方<br>
+  using namespace RitsGameSeminar;
+  
+  //
+  ```
