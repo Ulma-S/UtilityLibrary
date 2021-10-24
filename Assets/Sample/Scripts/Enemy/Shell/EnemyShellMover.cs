@@ -2,28 +2,25 @@ using System.Collections;
 using UnityEngine;
 
 namespace RitsGameSeminar.Sample {
-    public class PlayerBulletMover : MonoBehaviour {
+    public class EnemyShellMover : MonoBehaviour {
         [SerializeField] private Rigidbody m_rb;
         [SerializeField] private MeshRenderer m_renderer;
         [SerializeField] private Collider m_collider;
-        [SerializeField] private PlayerBulletCollisionDetector m_bulletCollisionDetector;
-        private float m_bulletSpeed;
-        private float m_bulletLife;
-
+        private float m_shellSpeed;
+        private float m_shellLife;
+        
         private void Start() {
-            m_bulletSpeed = ServiceLocator.Resolve<IResourceProvider>()
-                .LoadResource<PlayerStatus>(EResourceID.PlayerStatus).BulletSpeed;
+            m_shellSpeed = ServiceLocator.Resolve<IResourceProvider>()
+                .LoadResource<EnemyStatus>(EResourceID.EnemyStatus).ShellSpeed;
 
-            m_bulletLife = ServiceLocator.Resolve<IResourceProvider>()
-                .LoadResource<PlayerStatus>(EResourceID.PlayerStatus).BulletLife;
-
-            m_bulletCollisionDetector.OnHitHandler += Inactivate;
+            m_shellLife = ServiceLocator.Resolve<IResourceProvider>()
+                .LoadResource<EnemyStatus>(EResourceID.EnemyStatus).ShellLife;
             
             Inactivate();
         }
-
+        
         private IEnumerator SetLifeCoroutine() {
-            yield return new WaitForSeconds(m_bulletLife);
+            yield return new WaitForSeconds(m_shellLife);
             Inactivate();
         }
 
@@ -32,7 +29,7 @@ namespace RitsGameSeminar.Sample {
             m_collider.enabled = true;
             
             transform.position = startPos;
-            m_rb.velocity = dir.normalized * m_bulletSpeed;
+            m_rb.velocity = dir.normalized * m_shellSpeed;
 
             StartCoroutine(SetLifeCoroutine());
         }

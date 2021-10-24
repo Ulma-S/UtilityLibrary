@@ -21,3 +21,6 @@ MonoBehaviour:
   BulletInterval: 0.3
   MaxBulletCount: 20
   BulletLife: 4
+  ShellSpeed: 40
+  ShellLife: 4
+  MaxShellCount: 5

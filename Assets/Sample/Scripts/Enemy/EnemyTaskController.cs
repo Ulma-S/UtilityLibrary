@@ -8,14 +8,19 @@ namespace RitsGameSeminar.Sample {
         private void Start() {
             m_taskSystem = new TaskSystem<EEnemyTaskType>();
             
-            m_taskSystem.RegisterTask(new EnemyIdleState(gameObject));
-            m_taskSystem.RegisterTask(new EnemyMoveTask(gameObject));
-            m_taskSystem.RegisterTask(new EnemyShootAttackState(gameObject));
-            m_taskSystem.RegisterTask(new EnemyShockWaveAttackTask(gameObject));
-            m_taskSystem.RegisterTask(new EnemyPowerUpTask(gameObject));
+            m_taskSystem.RegisterTask(new ITask<EEnemyTaskType>[] {
+                new EnemyIdleTask(gameObject),
+                new EnemyMoveTask(gameObject),
+                new EnemyShootAttackTask(gameObject),
+                new EnemyShockWaveAttackTask(gameObject),
+                new EnemyCannonAttackTask(gameObject),
+                new EnemyPowerUpTask(gameObject),
+            });
 
-            m_taskSystem.EnqueueTask(EEnemyTaskType.ShootAttack);
-            m_taskSystem.EnqueueTask(EEnemyTaskType.ShockWaveAttack);
+            m_taskSystem
+                .EnqueueTask(EEnemyTaskType.ShootAttack)
+                .EnqueueTask(EEnemyTaskType.ShockWaveAttack)
+                .EnqueueTask(EEnemyTaskType.CannonAttack);
         }
 
         private void Update() {
@@ -27,8 +32,10 @@ namespace RitsGameSeminar.Sample {
         }
 
         private void SelectTask() {
-            m_taskSystem.EnqueueTask(EEnemyTaskType.ShootAttack);
-            m_taskSystem.EnqueueTask(EEnemyTaskType.ShockWaveAttack);
+            m_taskSystem
+                .EnqueueTask(EEnemyTaskType.ShootAttack)
+                .EnqueueTask(EEnemyTaskType.ShockWaveAttack)
+                .EnqueueTask(EEnemyTaskType.CannonAttack);
         }
     }
 }

@@ -58,6 +58,16 @@ namespace RitsGameSeminar.StateMachine {
             //stateの登録.
             m_statesMap[state.StateType] = state;
         }
+
+        /// <summary>
+        /// stateをまとめて登録するメソッド.
+        /// </summary>
+        /// <param name="states"></param>
+        public void RegisterState(StateBase<T>[] states) {
+            foreach (var state in states) {
+                RegisterState(state);
+            }
+        }
         
         /// <summary>
         /// stateの登録を解除するメソッド.

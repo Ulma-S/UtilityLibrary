@@ -5,6 +5,7 @@ namespace RitsGameSeminar.Sample {
         Move,
         ShockWaveAttack,
         ShootAttack,
+        CannonAttack,
         PowerUp,
     }
 }

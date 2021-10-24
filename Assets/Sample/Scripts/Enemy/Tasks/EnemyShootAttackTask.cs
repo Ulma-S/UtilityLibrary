@@ -2,12 +2,12 @@ using System.Collections;
 using UnityEngine;
 
 namespace RitsGameSeminar.Sample {
-    public class EnemyShootAttackState : EnemyTaskBase {
+    public class EnemyShootAttackTask : EnemyTaskBase {
         public override EEnemyTaskType TaskType { get; } = EEnemyTaskType.ShootAttack;
         private readonly EnemyGunController m_gunController;
         private bool m_isFinished = false;
 
-        public EnemyShootAttackState(GameObject owner) : base(owner) {
+        public EnemyShootAttackTask(GameObject owner) : base(owner) {
             m_gunController = Object.FindObjectOfType<EnemyGunController>();
         }
 

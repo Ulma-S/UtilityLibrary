@@ -56,14 +56,21 @@ namespace RitsGameSeminar.AI {
 
             m_registeredTaskMap.Add(type, task);
         }
-        
-        public void EnqueueTask(T type) {
+
+        public void RegisterTask(ITask<T>[] tasks) {
+            foreach (var task in tasks) {
+                RegisterTask(task);
+            }
+        }
+
+        public ITaskSystem<T> EnqueueTask(T type) {
             if (!m_registeredTaskMap.TryGetValue(type, out var task)) {
                 Debug.Log(type + "のタスクが登録されていません.");
-                return;
+                return this;
             }
 
             m_currentTaskQueue.Enqueue(task);
+            return this;
         }
         
         public void UpdateTask() {

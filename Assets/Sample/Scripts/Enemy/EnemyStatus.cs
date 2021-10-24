@@ -12,5 +12,8 @@ namespace RitsGameSeminar.Sample {
         public float BulletInterval;
         public int MaxBulletCount;
         public float BulletLife;
+        public float ShellSpeed;
+        public float ShellLife;
+        public int MaxShellCount;
     }
 }

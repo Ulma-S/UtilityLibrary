@@ -26,12 +26,18 @@ namespace RitsGameSeminar.AI {
         /// Taskの登録.
         /// </summary>
         void RegisterTask(ITask<T> task);
+
+        /// <summary>
+        /// 複数Taskの登録.
+        /// </summary>
+        /// <param name="tasks"></param>
+        void RegisterTask(ITask<T>[] tasks);
         
         /// <summary>
         /// Taskの実行待ちキューに入れる.
         /// </summary>
         /// <param name="type"></param>
-        void EnqueueTask(T type);
+        ITaskSystem<T> EnqueueTask(T type);
         
         /// <summary>
         /// Taskの更新処理.

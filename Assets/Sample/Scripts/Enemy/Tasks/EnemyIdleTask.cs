@@ -2,8 +2,8 @@ using RitsGameSeminar.Extension;
 using UnityEngine;
 
 namespace RitsGameSeminar.Sample {
-    public class EnemyIdleState : EnemyTaskBase {
-        public EnemyIdleState(GameObject owner) : base(owner) { }
+    public class EnemyIdleTask : EnemyTaskBase {
+        public EnemyIdleTask(GameObject owner) : base(owner) { }
 
         public override EEnemyTaskType TaskType { get; } = EEnemyTaskType.Idle;
 
