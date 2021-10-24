@@ -398,10 +398,11 @@ Unity向けの汎用ライブラリです.
      //例) 敵キャラクターのMove Task
      //    必ずITask<T>を実装してください.
      public class EnemyMoveTask : ITask<EEnemyTaskType> {
-         public EEnemyTaskType TaskType { get; } = EEnemyTaskType.None;
-         public abstract void OnEnter();
-         public abstract void OnUpdate();
-         public abstract void OnExit();
+         public EEnemyTaskType TaskType { get; } = EEnemyTaskType.Move;
+         public void OnEnter() {}
+         //TaskはOnUpdateでtrueが返されるまで更新されます.
+         public bool OnUpdate() { return false; }
+         public void OnExit() {}
      }
      //同様に他のクラスも作成します.
      //中身は省略.
@@ -512,9 +513,93 @@ Unity向けの汎用ライブラリです.
 
 <a id="CoroutineManager"></a>
 ### CoroutineManager
+- 概要<br>
+  外部クラスからCoroutine処理を委譲し、非MonoBehaviourクラスでCoroutineを使える仕組みを提供します.
+  
+- 使い方<br>
+  ```c#
+  using namespace RitsGameSeminar;
+  
+  //委譲元クラス
+  public class SampleClass {
+      public SampleClass(){
+          //Coroutineの実行.
+          CoroutineManager.Instance.StartDelegatedCoroutine(SampleCoroutine());
+          
+          //Coroutineの停止.
+          CoroutineManager.Instance.StopDelegatedCoroutine(SampleCoroutine());
+      }
+      
+      //実装は省略
+      private IEnumerator SampleCoroutine() {}
+  }
+  ```
+- APIリファレンス
+  ```c#
+  //class CoroutineManager
+  //Coroutineの開始.
+  Coroutine StartDelegatedCoroutine(IEnumerator coroutine);
+  
+  //Coroutineの停止.
+  void StopDelegatedCoroutine(IEnumerator coroutine);
+  ```
 
 <a id="ServiceLocator"></a>
 ### ServiceLocator
+- 概要<br>
+  具象クラスに依存しないよう、抽象クラスの型とインスタンスを紐づける機能を提供します.
+  
+- 使い方<br>
+  ```c#
+  //例) 入力システムを抽象化する.
+  //入力のインターフェース
+  public interface IInputProvider {
+      float HorizontalInput { get; }
+      float VerticalInput { get; }
+  }
+  
+  //キーボード入力の具象クラス.
+  public class KeyboardInputProvider : MonoBehaviour, IInputProvider {
+      float HorizontalInput { get; }
+      float VerticalInput { get; }
+      
+      private void Update() {
+          //実装は省略.
+      }
+  }
+  
+  //ServiceLocatorに登録する.
+  public class ReferenceInjector : MonoBehaviour {
+      [SerializeField] private KeyboardInputProvider m_inputProvider;
+      
+      private void Start() {
+          ServiceLocator.Register<IInputProvider>(m_inputProvider);
+      }
+  }
+  
+  public class PlayerMover : MonoBehaviour {
+      private IInputProvider m_inputProvider;
+      
+      private void Start(){
+          //ServiceLocatorを使わない場合
+          //結局参照を注入するところで具象クラスに依存してしまっていた.
+          m_inputProvider = FindObjectOfType<KeyboardInputProvider>();
+          
+          //ServiceLocatorを使う場合
+          //具象クラスに依存せず参照を注入できる.
+          m_inputProvider = ServiceLocator.Resolve<IInputProvider>();
+      }
+  } 
+  ```
+- APIリファレンス
+  ```c#
+  //class ServiceLocator
+  //インスタンスを登録.
+  public static void Register<T>(T instance);
+  
+  //インスタンスを取得するメソッド.
+  publicc static T Resolve<T>();
+  ```
 
 <a id="ResourceProvider"></a>
 ### ResourceProvider
