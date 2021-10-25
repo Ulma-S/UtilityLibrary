@@ -3,6 +3,8 @@
 Unity向けの汎用ライブラリです.
 - [常駐Scene](#常駐Scene)
 - [拡張メソッド](#拡張メソッド)
+- [StreamingAssets](#StreamingAssets)
+- [AssetBundle](#AssetBundle)
 1. [Singleton](#Singleton)
 2. [SceneManager](#SceneManager) (複数Sceneの遷移)
 3. [UIFadeManager](#UIFadeManager) (画面のフェード)
@@ -76,6 +78,22 @@ Unity向けの汎用ライブラリです.
   //例) 座標のx成分のみ設定する.
   transform.SetPositionX(2f);
   ```
+
+<a id="StreamingAssets"></a>
+### StreamingAssets
+- 概要<br>
+  動的リソースを管理する仕組みの一つです.<br>
+  適切に使用することで、Resourcesに比べパフォーマンスを向上させることができます.<br>
+  
+<a id="AssetBundle"></a>
+### AssetBundle
+- 概要<br>
+  動的リソースを管理する仕組みの一つです.<br>
+  ビルド後に外部からリソースを差し替えることができます.<br>
+  
+- 使い方<br>
+  AssetBundleをビルドする必要があります.<br>
+  詳しくは[Asset Bundle Browser](https://docs.unity3d.com/ja/2019.4/Manual/AssetBundles-Browser.html)を参考にしてください.<br>
 
 <a id="Singleton"></a>
 ### Singleton / SingletonMonoBehaviour
@@ -604,7 +622,8 @@ Unity向けの汎用ライブラリです.
 ### ResourceProvider
 - 概要<br>
   様々な動的リソース管理をまとめる仕組みを提供します.<br>
-  ([ServiceLocator](#ServiceLocator)と併用することを推奨します)<br>
+  ResourcesやStreamingAssetsをラップしたようなものです.<br>
+  ([ServiceLocator](#ServiceLocator), [StreamingAssets](#StreamingAssets), [AssetBundle](#AssetBundle)と併用することを推奨します)<br>
   本ライブラリではUnity Editor上で使う用とWindows用を用意しています.<br>
   対応プラットフォームを増やす際は、適宜IResourceProviderを実装してください.<br>
 
@@ -654,7 +673,7 @@ Unity向けの汎用ライブラリです.
              //ResourceProviderにリソースを登録する.
              //ここではPlayerStatus型のScriptableObjectをEResourceID.PlayerStatusとして登録しています.
              //Unity Editor用ではResourcesフォルダに"PlayerStatus" assetを配置してください.
-             //Windows用ではStreamingAssets/Windows/に"PlayerStatus" assetを配置してください.
+             //Windows用ではStreamingAssets/Windows/にAssetBundle化した"playerstatus" assetを配置してください.
              ServiceLocator.Resolve<IResourceProvider>().RegisterResource<PlayerStatus>(EResourceID.PlayerStatus, "PlayerStatus");
          }
      }
