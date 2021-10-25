@@ -11,14 +11,15 @@ Unity向けの汎用ライブラリです.
 4. [BgmManager](#BgmManager) (BGMの再生機能管理)
 5. [SoundEffectManager](#SoundEffectManager) (SEの再生機能管理)
 6. [VisualEffectManager](#VisualEffectManager) (VFXの再生機能管理)
+7. [SaveManager](#SaveManager) (セーブデータの管理) 
 
 以下は少し難しいかもしれません.<br>
 
-7. [StateMachine](#StateMachine) (状態遷移管理)
-8. [TaskSystem](#TaskSystem) (ルールベースAIの線形的な行動制御)
-9. [CoroutineManager](#CoroutineManager) (非MonoBehaviourクラスからコルーチン処理を委譲)
-10. [ServiceLocator](#ServiceLocator) (簡易的な依存性の注入)
-11. [ResourceProvider](#ResourceProvider) (動的リソースの管理)
+8. [StateMachine](#StateMachine) (状態遷移管理)
+9. [TaskSystem](#TaskSystem) (ルールベースAIの線形的な行動制御)
+10. [CoroutineManager](#CoroutineManager) (非MonoBehaviourクラスからコルーチン処理を委譲)
+11. [ServiceLocator](#ServiceLocator) (簡易的な依存性の注入)
+12. [ResourceProvider](#ResourceProvider) (動的リソースの管理)
 
 ## 詳細説明
 <a id="常駐Scene"></a>
@@ -322,6 +323,15 @@ Unity向けの汎用ライブラリです.
   //例) ヒットエフェクトの再生.
   VisualEffectManager.Instance.Play(EVisualEffectID.Hit);
   ```
+<a id="SaveManager"></a>
+### SaveManager
+- 概要<br>
+  セーブデータを管理するための機能を提供します.<br>
+
+- 使い方<br>
+  ```c#
+  ```
+
 <a id="StateMachine"></a>
 ### StateMachine
 - 概要<br>
