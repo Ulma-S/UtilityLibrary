@@ -603,10 +603,10 @@ Unity向けの汎用ライブラリです.
 <a id="ResourceProvider"></a>
 ### ResourceProvider
 - 概要<br>
-  様々な動的リソース管理をまとめる仕組みを提供します.
-  ([ServiceLocator](#ServiceLocator)と併用することを推奨します)
-  本ライブラリではUnity Editor上で使う用とWindows用を用意しています.
-  対応プラットフォームを増やす際は、適宜IResourceProviderを実装してください.
+  様々な動的リソース管理をまとめる仕組みを提供します.<br>
+  ([ServiceLocator](#ServiceLocator)と併用することを推奨します)<br>
+  本ライブラリではUnity Editor上で使う用とWindows用を用意しています.<br>
+  対応プラットフォームを増やす際は、適宜IResourceProviderを実装してください.<br>
 
 - 準備<br>
   1. EResourceID.csを以下のように定義します.
