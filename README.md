@@ -604,7 +604,9 @@ Unity向けの汎用ライブラリです.
 ### ResourceProvider
 - 概要<br>
   様々な動的リソース管理をまとめる仕組みを提供します.
-  (ServiceLocatorと併用することを推奨します)
+  ([ServiceLocator](#ServiceLocator)と併用することを推奨します)
+  本ライブラリではUnity Editor上で使う用とWindows用を用意しています.
+  対応プラットフォームを増やす際は、適宜IResourceProviderを実装してください.
 
 - 準備<br>
   1. EResourceID.csを以下のように定義します.
@@ -615,20 +617,61 @@ Unity向けの汎用ライブラリです.
          PlayerStatus,
      }
      ```
-  2. ServiceLocatorに参照を注入する.
+  2. ServiceLocatorにResourceProviderの参照を注入する.
      ```c#
+     using namespace RitsGameSeminar;
+     
      public static class ReferenceInjector {
          [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
          private static void Inject() {
-             ServiceLocator.Register<IResourceProvider>();
+             //例) プラットフォームによって切り替える.
+         #if UNITY_EDITOR
+             //Unity Editor用
+             ServiceLocator.Register<IResourceProvider>(new DebugResourceProvider());
+         #elif UNITY_STANDALONE_WIN
+             //Window用
+             ServiceLocator.Register<IResourceProvider>(new WindowsResourceProvider());
+         #endif
+         }
+     }
+     ```
+  3. ResourceProviderにリソースを登録する.
+     ```c#
+     //PlayerStatus.cs
+     //登録するasset
+     public class PlayerStatus : ScriptableObject {
+         public float MoveSpeed;
+     }
+     
+     //ReferenceInjector.cs
+     using namespace RitsGameSeminar;
+     
+     public static class ReferenceInjector {
+         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+         private static void Inject() {
+             //一部省略
              
+             //ResourceProviderにリソースを登録する.
+             //ここではPlayerStatus型のScriptableObjectをEResourceID.PlayerStatusとして登録しています.
+             //Unity Editor用ではResourcesフォルダに"PlayerStatus" assetを配置してください.
+             //Windows用ではStreamingAssets/Windows/に"PlayerStatus" assetを配置してください.
              ServiceLocator.Resolve<IResourceProvider>().RegisterResource<PlayerStatus>(EResourceID.PlayerStatus, "PlayerStatus");
          }
      }
      ```
 
 - 使い方<br>
+  ```c#
   using namespace RitsGameSeminar;
   
-  //
+  public class PlayerMover : MonoBehaviour {
+      private float m_moveSpeed;
+      
+      private void Start() {
+          //ServiceLocatorからプラットフォームに対応したResourceProviderを取得し、
+          //登録されたリソースを読み込む.
+          m_moveSpeed = ServiceLocator.Resolve<IResourceProvider>()
+                                      .LoadResource<PlayerStatus>(EResourceID.PlayerStatus).MoveSpeed;
+      }
+  }
   ```
