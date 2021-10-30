@@ -12,14 +12,15 @@ Unity向けの汎用ライブラリです.
 5. [SoundEffectManager](#SoundEffectManager) (SEの再生機能管理)
 6. [VisualEffectManager](#VisualEffectManager) (VFXの再生機能管理)
 7. [SaveManager](#SaveManager) (セーブデータの管理) 
+8. [CSVReader](#CSVReader) (CSVファイルの読み込み)
 
 以下は少し難しいかもしれません.<br>
 
-8. [StateMachine](#StateMachine) (状態遷移管理)
-9. [TaskSystem](#TaskSystem) (ルールベースAIの線形的な行動制御)
-10. [CoroutineManager](#CoroutineManager) (非MonoBehaviourクラスからコルーチン処理を委譲)
-11. [ServiceLocator](#ServiceLocator) (簡易的な依存性の注入)
-12. [ResourceProvider](#ResourceProvider) (動的リソースの管理)
+9. [StateMachine](#StateMachine) (状態遷移管理)
+10. [TaskSystem](#TaskSystem) (ルールベースAIの線形的な行動制御)
+11. [CoroutineManager](#CoroutineManager) (非MonoBehaviourクラスからコルーチン処理を委譲)
+12. [ServiceLocator](#ServiceLocator) (簡易的な依存性の注入)
+13. [ResourceProvider](#ResourceProvider) (動的リソースの管理)
 
 ## 詳細説明
 <a id="常駐Scene"></a>
@@ -331,6 +332,13 @@ Unity向けの汎用ライブラリです.
 - 使い方<br>
   ```c#
   ```
+  
+<a id="CSVReader"></a>
+- 概要<br>
+  CSVファイルを読み込むための機能を提供します.<br>
+
+- 使い方<br>
+  
 
 <a id="StateMachine"></a>
 ### StateMachine
