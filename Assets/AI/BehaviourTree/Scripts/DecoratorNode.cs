@@ -10,14 +10,14 @@ namespace RitsGameSeminar.AI.BehaviourTree {
         private bool m_judge = false;
         private bool m_hasJudged = false;
         
-        public DecoratorNode(BehaviourTreeMachine btMachine, Node subNode, Func<bool> judgeMethod) : base(btMachine) {
+        public DecoratorNode(BehaviourTreeSystem btSystem, Node subNode, Func<bool> judgeMethod) : base(btSystem) {
             m_subNode = subNode;
             m_judgeMethod = judgeMethod;
         }
 
         public override void Execute() {
             if (m_judgeMethod == null) {
-                btMachine.NodeStatusMap[nodeID] = ENodeStatus.Failure;
+                btSystem.NodeStatusMap[nodeID] = ENodeStatus.Failure;
                 return;
             }
 
@@ -28,11 +28,11 @@ namespace RitsGameSeminar.AI.BehaviourTree {
 
             if (m_judge) {
                 m_subNode.Execute();
-                btMachine.NodeStatusMap[nodeID] = btMachine.NodeStatusMap[m_subNode.nodeID];
+                btSystem.NodeStatusMap[nodeID] = btSystem.NodeStatusMap[m_subNode.nodeID];
                 return;
             }
 
-            btMachine.NodeStatusMap[nodeID] = ENodeStatus.Failure;
+            btSystem.NodeStatusMap[nodeID] = ENodeStatus.Failure;
         }
 
         public override void Reset() {

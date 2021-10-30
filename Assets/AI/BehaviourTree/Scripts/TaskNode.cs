@@ -5,23 +5,30 @@ namespace RitsGameSeminar.AI.BehaviourTree {
     /// 基本となるnode.
     /// </summary>
     public class TaskNode : Node {
-        private readonly Func<ENodeStatus> m_actionMethod;
+        private readonly Func<ENodeStatus> m_taskMethod;
         
-        public TaskNode(BehaviourTreeMachine btMachine, Func<ENodeStatus> actionMethod) : base(btMachine){
-            m_actionMethod = actionMethod;
+        public TaskNode(BehaviourTreeSystem btSystem, Func<ENodeStatus> taskMethod) : base(btSystem){
+            m_taskMethod = taskMethod;
         }
 
         public override void Execute() {
-            if (m_actionMethod == null) {
-                btMachine.NodeStatusMap[nodeID] = ENodeStatus.Failure;
+            if (btSystem == null) {
+                return;
+            }
+            
+            //methodがnullなら何もしない.
+            if (m_taskMethod == null) {
+                btSystem.NodeStatusMap[nodeID] = ENodeStatus.Failure;
                 return;
             }
 
-            var result = m_actionMethod.Invoke();
-            btMachine.NodeStatusMap[nodeID] = result;
+            //methodの実行.
+            var result = m_taskMethod.Invoke();
+            
+            //nodeの状態を反映.
+            btSystem.NodeStatusMap[nodeID] = result;
         }
 
-        public override void Reset() {
-        }
+        public override void Reset() { }
     }
 }

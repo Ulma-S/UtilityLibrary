@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace RitsGameSeminar.AI.BehaviourTree {
     /// <summary>
-    /// Behaviour Treeのコア機能を提供するクラス.
+    /// Behaviour Treeの実行機能を提供するクラス.
     /// </summary>
-    public class BehaviourTreeMachine {
+    public class BehaviourTreeSystem {
         private Node m_rootNode;
         public readonly Dictionary<int, ENodeStatus> NodeStatusMap = new Dictionary<int, ENodeStatus>();
         
@@ -42,7 +41,8 @@ namespace RitsGameSeminar.AI.BehaviourTree {
         /// BT全体をリセットするメソッド.
         /// </summary>
         private void Reset() {
-            foreach (var key in NodeStatusMap.Keys.ToList()) {
+            var keyList = NodeStatusMap.Keys.ToList();
+            foreach (var key in keyList) {
                 NodeStatusMap[key] = ENodeStatus.Ready;
             }
             

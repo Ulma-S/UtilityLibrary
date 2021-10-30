@@ -3,13 +3,13 @@ namespace RitsGameSeminar.AI.BehaviourTree {
     /// Nodeの基底クラス.
     /// </summary>
     public abstract class Node {
-        protected readonly BehaviourTreeMachine btMachine;
+        protected readonly BehaviourTreeSystem btSystem;
         public int nodeID { get; }
         
-        protected Node(BehaviourTreeMachine btMachine) {
-            this.btMachine = btMachine;
-            nodeID = btMachine.GetNextNodeID();
-            btMachine.NodeStatusMap[nodeID] = ENodeStatus.Ready;
+        protected Node(BehaviourTreeSystem btSystem) {
+            this.btSystem = btSystem;
+            nodeID = btSystem.GetNextNodeID();
+            btSystem.NodeStatusMap[nodeID] = ENodeStatus.Ready;
         }
         
         /// <summary>
