@@ -7,6 +7,8 @@ namespace RitsGameSeminar.AI.BehaviourTree {
     public class DecoratorNode : Node {
         private readonly Node m_subNode;
         private readonly Func<bool> m_judgeMethod;
+        private bool m_judge = false;
+        private bool m_hasJudged = false;
         
         public DecoratorNode(BehaviourTreeMachine btMachine, Node subNode, Func<bool> judgeMethod) : base(btMachine) {
             m_subNode = subNode;
@@ -19,10 +21,14 @@ namespace RitsGameSeminar.AI.BehaviourTree {
                 return;
             }
 
-            var judge = m_judgeMethod.Invoke();
+            if (!m_hasJudged) {
+                m_judge = m_judgeMethod.Invoke();
+                m_hasJudged = true;
+            }
 
-            if (judge) {
+            if (m_judge) {
                 m_subNode.Execute();
+                btMachine.NodeStatusMap[nodeID] = btMachine.NodeStatusMap[m_subNode.nodeID];
                 return;
             }
 
@@ -30,6 +36,8 @@ namespace RitsGameSeminar.AI.BehaviourTree {
         }
 
         public override void Reset() {
+            m_judge = false;
+            m_hasJudged = false;
         }
     }
 }
