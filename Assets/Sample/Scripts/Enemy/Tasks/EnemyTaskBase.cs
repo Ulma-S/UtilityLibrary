@@ -1,4 +1,4 @@
-using RitsGameSeminar.AI;
+using RitsGameSeminar.AI.TaskSystem;
 using UnityEngine;
 
 namespace RitsGameSeminar.Sample {

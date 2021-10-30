@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using UnityEngine;
 
-namespace RitsGameSeminar.AI {
+namespace RitsGameSeminar.AI.TaskSystem {
     /// <summary>
     /// 事前に登録されたTaskをキューに入れて、順に実行するクラス.
     /// </summary>

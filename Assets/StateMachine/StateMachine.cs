@@ -54,6 +54,7 @@ namespace RitsGameSeminar.StateMachine {
             //キーが存在したら何もしない.
             if (m_statesMap.ContainsKey(state.StateType)) {
                 Debug.LogError(state.StateType + "stateは既に登録されています.");
+                return;
             }
             //stateの登録.
             m_statesMap[state.StateType] = state;

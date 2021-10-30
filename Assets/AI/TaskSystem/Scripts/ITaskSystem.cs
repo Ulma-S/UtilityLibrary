@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 
-namespace RitsGameSeminar.AI {
+namespace RitsGameSeminar.AI.TaskSystem {
     public interface ITaskSystem<T> { 
         /// <summary>
         /// 現在積まれているTask typeのリスト.

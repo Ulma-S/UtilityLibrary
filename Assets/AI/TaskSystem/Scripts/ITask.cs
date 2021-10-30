@@ -1,4 +1,4 @@
-namespace RitsGameSeminar.AI {
+namespace RitsGameSeminar.AI.TaskSystem {
     /// <summary>
     /// Taskの機能を提供するインターフェース.
     /// </summary>
