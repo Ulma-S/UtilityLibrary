@@ -12,7 +12,7 @@ Unity向けの汎用ライブラリです.
 5. [SoundEffectManager](#SoundEffectManager) (SEの再生機能管理)
 6. [VisualEffectManager](#VisualEffectManager) (VFXの再生機能管理)
 7. [SaveManager](#SaveManager) (セーブデータの管理) 
-8. [CSVReader](#CSVReader) (CSVファイルの読み込み)
+8. [CsvReader](#CsvReader) (csvファイルの読み込み)
 
 以下は少し難しいかもしれません.<br>
 
@@ -334,11 +334,26 @@ Unity向けの汎用ライブラリです.
   ```c#
   ```
   
-<a id="CSVReader"></a>
+<a id="CsvReader"></a>
+### CsvReader
 - 概要<br>
-  CSVファイルを読み込むための機能を提供します.<br>
+  csvファイルを読み込むための機能を提供します.<br>
 
 - 使い方<br>
+  ```c#
+  using namespace RitsGameSeminar;
+  
+  //mapdataファイルを読み込む場合
+  List<string[]> data = CsvReader.Instance.Load(mapdata);
+  
+  //後述のServiceLocator, ResourceProviderを併用する場合
+  //ResourceProviderの項目を参考にしてassetを登録します.
+  //抜粋
+  public enum EResourceID {
+      MapData,
+  }
+  List<string[]> data = CsvReader.Instance.Load(MapData);
+  ```
   
 
 <a id="StateMachine"></a>
