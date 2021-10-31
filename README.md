@@ -552,7 +552,7 @@ Unity向けの汎用ライブラリです.
   Unreal Engine 4には標準で搭載されています.<br>
   ここでは仕組みの詳細は割愛します.<br>
   
-  - BehavioutTreeSystem<br>
+  - BehaviourTreeSystem<br>
     BehaviourTreeの実行機能を提供します.<br>
     
   - TaskNode<br>
