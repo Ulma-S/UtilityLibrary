@@ -13,7 +13,19 @@ namespace RitsGameSeminar.Sample {
             
             //シーンのロード完了後にフェードインを開始する.
             //ラムダ式という書き方です.
-            SceneManager.Instance.OnStageLoadedHandler += () => UIFadeManager.Instance.FadeIn();
+            SceneManager.Instance.OnStageLoadedHandler += () => {
+                UIFadeManager.Instance.FadeIn();
+            };
+            
+            //以下の処理は正確には完了するまで待機する必要があります.
+            //セーブデータがあれば読み込む.
+            if (SaveManager.Instance.ExistSaveData()) {
+                SaveManager.Instance.Load();
+            }
+            //なければ新規作成.
+            else {
+                SaveManager.Instance.CreateSaveData();
+            }
         }
 
         private void Update() {
@@ -22,6 +34,12 @@ namespace RitsGameSeminar.Sample {
                     SceneManager.Instance.LoadStage(EStageID.Title);
                 });
                 m_hasLoaded = true;
+            }
+
+            if (m_inputProvider.IsReturnButtonDown) {
+                Debug.Log(SaveManager.Instance.SaveData.Level);
+                var data = SaveManager.Instance.SaveData;
+                data.Level++;
             }
         }
     }

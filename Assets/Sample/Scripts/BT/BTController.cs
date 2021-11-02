@@ -14,9 +14,9 @@ namespace RitsGameSeminar.Sample {
 
             var goToShopTask = new TaskNode(m_btSystem, GoToShop);
             var goToBankTask = new TaskNode(m_btSystem, GoToBank);
-            var goToHomeTask = new TaskNode(m_btSystem, GoToHome);
-            var buyJuiceTask = new TaskNode(m_btSystem, BuyJuiceTask);
-            var buyWaterTask = new TaskNode(m_btSystem, BuyWaterTask);
+            var goHomeTask = new TaskNode(m_btSystem, GoHome);
+            var buyJuiceTask = new TaskNode(m_btSystem, BuyJuice);
+            var buyWaterTask = new TaskNode(m_btSystem, BuyWater);
 
             var rootNode = new SequenceNode(m_btSystem, new Node[] {
                 new SelectorNode(m_btSystem, new Node[] {
@@ -31,7 +31,7 @@ namespace RitsGameSeminar.Sample {
                         buyJuiceTask,
                         buyWaterTask,
                     }),
-                    goToHomeTask,
+                    goHomeTask,
                 }),
             });
             
@@ -74,7 +74,7 @@ namespace RitsGameSeminar.Sample {
             return ENodeStatus.Running;
         }
         
-        private ENodeStatus GoToHome() {
+        private ENodeStatus GoHome() {
             var dir = (Vector3.zero - transform.position).normalized;
             transform.Translate(dir * 3 * Time.deltaTime);
             var dis = (Vector3.zero - transform.position).magnitude;
@@ -85,7 +85,7 @@ namespace RitsGameSeminar.Sample {
             return ENodeStatus.Running;
         }
 
-        private ENodeStatus BuyJuiceTask() {
+        private ENodeStatus BuyJuice() {
             if (m_currentJuice > 0 && m_currentMoney >= 150) {
                 m_currentJuice--;
                 m_currentMoney -= 150;
@@ -97,7 +97,7 @@ namespace RitsGameSeminar.Sample {
             return ENodeStatus.Failure;
         }
 
-        private ENodeStatus BuyWaterTask() {
+        private ENodeStatus BuyWater() {
             if (m_currentMoney >= 150) {
                 m_currentMoney -= 150;
                 Debug.Log("水を買った！");

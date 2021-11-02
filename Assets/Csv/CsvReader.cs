@@ -12,6 +12,23 @@ namespace RitsGameSeminar {
         /// <summary>
         /// CSVファイルを読み込むメソッド.
         /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public List<string[]> Load(string fileName) {
+            var csvFile = Resources.Load<TextAsset>(fileName);
+            var output = new List<string[]>();
+            var reader = new StringReader(csvFile.text);
+            while (reader.Peek() > -1) {
+                var line = reader.ReadLine();
+                output.Add(line.Split(','));
+            }
+            
+            return output;
+        }
+        
+        /// <summary>
+        /// CSVファイルを読み込むメソッド.
+        /// </summary>
         /// <param name="resourceID"></param>
         /// <returns></returns>
         public List<string[]> Load(EResourceID resourceID) {
