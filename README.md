@@ -12,15 +12,16 @@ Unity向けの汎用ライブラリです.
 5. [SoundEffectManager](#SoundEffectManager) (SEの再生機能管理)
 6. [VisualEffectManager](#VisualEffectManager) (VFXの再生機能管理)
 7. [SaveManager](#SaveManager) (セーブデータの管理) 
-8. [CSVReader](#CSVReader) (CSVファイルの読み込み)
+8. [CsvReader](#CsvReader) (csvファイルの読み込み)
 
 以下は少し難しいかもしれません.<br>
 
 9. [StateMachine](#StateMachine) (状態遷移管理)
 10. [TaskSystem](#TaskSystem) (ルールベースAIの線形的な行動制御)
-11. [CoroutineManager](#CoroutineManager) (非MonoBehaviourクラスからコルーチン処理を委譲)
-12. [ServiceLocator](#ServiceLocator) (簡易的な依存性の注入)
-13. [ResourceProvider](#ResourceProvider) (動的リソースの管理)
+11. [BehaviourTree](#BehaviourTree) (ビヘイビアベースAI)
+12. [CoroutineManager](#CoroutineManager) (非MonoBehaviourクラスからコルーチン処理を委譲)
+13. [ServiceLocator](#ServiceLocator) (簡易的な依存性の注入)
+14. [ResourceProvider](#ResourceProvider) (動的リソースの管理)
 
 ## 詳細説明
 <a id="常駐Scene"></a>
@@ -333,11 +334,26 @@ Unity向けの汎用ライブラリです.
   ```c#
   ```
   
-<a id="CSVReader"></a>
+<a id="CsvReader"></a>
+### CsvReader
 - 概要<br>
-  CSVファイルを読み込むための機能を提供します.<br>
+  csvファイルを読み込むための機能を提供します.<br>
 
 - 使い方<br>
+  ```c#
+  using namespace RitsGameSeminar;
+  
+  //mapdataファイルを読み込む場合
+  List<string[]> data = CsvReader.Instance.Load(mapdata);
+  
+  //後述のServiceLocator, ResourceProviderを併用する場合
+  //ResourceProviderの項目を参考にしてassetを登録します.
+  //抜粋
+  public enum EResourceID {
+      MapData,
+  }
+  List<string[]> data = CsvReader.Instance.Load(MapData);
+  ```
   
 
 <a id="StateMachine"></a>
@@ -505,49 +521,179 @@ Unity向けの汎用ライブラリです.
 - APIリファレンス
   ```c#
   //interface ITaskSystem<T>
-  //現在入っているTaskの種類のlist
+  //現在入っているTaskの種類のlist.
   ReadOnlyCollection<T> CurrentTaskList;
   
-  //現在のTaskの種類
+  //現在のTaskの種類.
   T CurrentTaskType;
   
   //全てのTaskが終了しているか?
   bool IsEndAllTasks;
   
-  //Taskの登録
+  //Taskの登録.
   void RegisterTask(ITask<T> task);
   void RegisterTask(ITask<T>[] tasks);
   
-  //Taskを実行待ちQueueに入れる
+  //Taskを実行待ちQueueに入れる.
   ITaskSystem<T> EnqueueTask(T type);
   
-  //Taskの更新
+  //Taskの更新.
   void UpdateTask();
   
-  //現在のTaskを強制終了する
+  //現在のTaskを強制終了する.
   void KillCurrentTask();
   
-  //現在のTaskを強制終了し、実行待ちQueueを空にする
+  //現在のTaskを強制終了し、実行待ちQueueを空にする.
   void KillAllTasks();
   
   //interface ITask<T>
-  //Taskの種類
+  //Taskの種類.
   T TaskType;
   
-  //開始処理
+  //開始処理.
   void OnEnter();
   
-  //更新処理 (trueを返すと終了処理が呼ばれ、Taskを終了する)
+  //更新処理. (trueを返すと終了処理が呼ばれ、Taskを終了する)
   bool OnUpdate();
   
-  //終了処理
+  //終了処理.
   void OnExit();
+  ```
+<a id="BehaviourTree"></a>
+### BehaviourTree
+- 概要<br>
+  ビヘイビアベースAIを制御するための仕組みを提供します.<br>
+  Behaviour TreeとはゲームAIを制御する上でしばしば使われる仕組みです.<br>
+  Unreal Engine 4には標準で搭載されています.<br>
+  ここでは仕組みの詳細は割愛します.<br>
+  
+  - BehaviourTreeSystem<br>
+    BehaviourTreeの実行機能を提供します.<br>
+    
+  - TaskNode<br>
+    基本となるnodeです.
+    
+  - SelectorNode<br>
+    sub nodeを登録し,いずれかが成功するまで実行します.<br>
+    
+  - SequenceNode<br>
+    sub nodeを登録し,いずれかが失敗するまで実行します.<br>
+  
+  - DecoratorNode<br>
+    登録した条件が満たされる場合,sub nodeを実行します.<br>
+  
+- 使い方<br>
+  例) お金を持っていたら在庫に応じてジュースか水を買い、お金がなければ銀行に行くAI.<br>
+  ```c#
+  using namespace RitsGameSeminar.AI.BehaviourTree;
+  
+  public class BTController : MonoBehaviour {
+      private BehaviourTreeSystem m_btSystem;
+        
+      private void Start() {
+          //BehaviourTreeのインスタンスを作成.
+          m_btSystem = new BehaviourTreeSystem();
+      
+          //店に行くTask.
+          var goToShopTask = new TaskNode(m_btSystem, GoToShop);        
+          //銀行に行くTask.
+          var goToBankTask = new TaskNode(m_btSystem, GoToBank);
+          //家に帰るTask.
+          var goHomeTask = new TaskNode(m_btSystem, GoHome);
+          //ジュースを買うTask.
+          var buyJuiceTask = new TaskNode(m_btSystem, BuyJuice);
+          //水を買うTask.
+          var buyWaterTask = new TaskNode(m_btSystem, BuyWater);
+          
+          //nodeを設定.
+          var rootNode = new SequenceNode(m_btSystem, new Node[] {
+              new SelectorNode(m_btSysyem, new Node[] {
+                  new DecoratorNode(m_btSystem, goToShopTask, HasMoney),
+                  new SequenceNode(m_btSystem, new Node[] {
+                      goToBankTask,
+                      goToShopTask,
+                  }),
+              }),
+              new SequenceNode(m_btSystem, new Node[] {
+                  new SelectorNode(m_btSystem, new Node[] {
+                      buyJuiceTask,
+                      buyWaterTask,
+                  }),
+                  goHomeTask,
+              }),
+          });
+          
+          //root nodeを設定.
+          m_btSystem.SetRoot(rootNode);
+      }
+      
+      private void Update() {
+          //Systemの更新.
+          m_btSystem.Execute();
+      }
+      
+      private ENodeStatus GoToShop() {
+          //実装は省略.
+          //成功したらENodeStatus.Success,
+          //失敗したらENodeStatus.Failure,
+          //実行中ならENodeStatus.Running,
+          //を返すようにします.
+      }
+      
+      //以下同様に実装します.
+      private ENodeStatus GoToBank() { }
+      private ENodeStatus GoHome() { }
+      private ENodeStatus BuyJuice() { }
+      private ENodeStatus BuyWater() { }
+      
+      //お金を持っているか判定するメソッド.
+      private bool HasMoney() { }
+  }
+  ```
+
+- APIリファレンス<br>
+  ```c#
+  //class BehaviourTreeSystem
+  //BehaviourTreeの実行.
+  void Execute();
+  
+  //root nodeを設定する.
+  void SetRoot(Node rootNode);
+  
+  
+  /// <summary>
+  /// TaskNodeのコンストラクタ.
+  /// </summary>
+  /// <param name="btSystem">System</param>
+  public class TaskNode(BehaviourTreeSystem btSystem);
+  
+  /// <summary>
+  /// SelectorNodeのコンストラクタ.
+  /// </summary>
+  /// <param name="btSystem">System</param>
+  /// <param name="nodes">sub nodeの配列</param>
+  public class SelectorNode(BehaviourTreeSystem btSystem, Node[] nodes);
+  
+  /// <summary>
+  /// SequenceNodeのコンストラクタ.
+  /// </summary>
+  /// <param name="btSystem">System</param>
+  /// <param name="nodes">sub nodeの配列</param>
+  public class SequenceNode(BehaviourTreeSystem btSystem, Node[] nodes);
+  
+  /// <summary>
+  /// DecoratorNodeのコンストラクタ.
+  /// </summary>
+  /// <param name="btSystem">System</param>
+  /// <param name="node">sub node</param>
+  /// <param name="judgeMethod">sub nodeを実行するか判定するメソッド</param>
+  public class DecoratorNode(BehaviourTreeSystem btSystem, Node node, Func<bool> judgeMethod);
   ```
 
 <a id="CoroutineManager"></a>
 ### CoroutineManager
 - 概要<br>
-  外部クラスからCoroutine処理を委譲し、非MonoBehaviourクラスでCoroutineを使える仕組みを提供します.
+  外部クラスからCoroutine処理を委譲し、非MonoBehaviourクラスでCoroutineを使える仕組みを提供します.<br>
   
 - 使い方<br>
   ```c#
