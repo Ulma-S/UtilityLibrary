@@ -43,3 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d32d30018560c14eb8ab5b22d71da68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_enableSaveOnPause: 1
+  m_enableSaveOnQuit: 1
+  m_enableEncryption: 1
