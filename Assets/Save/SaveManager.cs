@@ -23,7 +23,7 @@ namespace RitsGameSeminar.Sample {
         private const string m_salt = "saltstring";
         
         /// <summary>
-        /// 
+        /// 暗号化に使用するパスフレーズ.
         /// </summary>
         private const string m_password = "password";
 
