@@ -329,9 +329,96 @@ Unity向けの汎用ライブラリです.
 ### SaveManager
 - 概要<br>
   セーブデータを管理するための機能を提供します.<br>
+  
+- 準備<br>
+  - アプリケーション中断時にオートセーブする.<br>
+    SaveManager componentのインスペクタプロパティ`Enable Save On Pause`をチェックする.<br>
+    
+  - アプリケーション終了時にオートセーブする.<br>
+    SaveManager componentのインスペクタプロパティ`Enable Save On Quit`をチェックする.<br>
+    
+  - セーブデータを暗号化する.<br>
+    SaveManager componentのインスペクタプロパティ`Enable Encription`をチェックする.<br>
+    セーブデータが既に存在する状態でこのプロパティを切り替える際は、先にセーブデータを削除してください.<br>
+    
+  - セーブデータの形式を決定する.<br>
+    以下のスクリプトを編集してください.<br>
+    ```c#
+    //SaveData.cs
+    namespace RitsGameSeminar {
+        [System.Serializable]
+        public class SaveData {
+           //例) 名前.
+           public string Name;
+           
+           //例) レベル.
+           public int Level;
+        }
+    }
+    ```
 
 - 使い方<br>
   ```c#
+  using namespace RitsGameSemiar;
+  
+  public class GameManager : MonoBehaviour {
+      private void Awake() {
+          //各タイミングで処理を実行したい場合は、以下のように処理を登録してください.
+          //各処理のメソッドに引数として登録することも可能です. (APIリファレンス参照)
+          //セーブ終了時.
+          SaveManager.Instance.OnSaveFinishedHandler += () => { Debug.Log("Save finished."); };
+          
+          //ロード終了時.
+          SaveManager.Instance.OnLoadFinishedHandler += () => { Debug.Log("Load finished."); };
+      
+          //セーブデータ作成時.
+          SaveManager.Instance.OnSaveDataCreatedHandler += () => { Debug.Log("SaveData created."); };
+      
+          
+          //セーブデータの有無によって処理を分岐.
+          //セーブデータが存在するならロード.
+          if (ExistSaveData()) {
+              SaveManager.Instance.Load();
+          }
+          //セーブデータが存在しないなら新規作成.
+          else {
+              SaveManager.Instance.CreateSaveData();
+          }
+      }
+      
+      private void Update() {
+          //スペースキーを押したらセーブ.
+          if (Input.GetKeyDown(KeyCode.Space) {
+              SaveManager.Instance.Save();
+          }
+          
+          //セーブデータにアクセスする.
+          //例) レベルを出力.
+          Debug.Log(SaveManager.Instance.SaveData.Level);
+      }
+  }
+  ```
+  
+- APIリファレンス<br>
+  ```c#
+  //SaveManager.cs
+  //セーブデータが存在するか判定する.
+  bool ExistSaveData();
+  
+  //セーブする.
+  void Save(Action onSaveFinishedCallback = null);
+  
+  //ロードする.
+  void Load(Action onLoadFinishedCallback = null);
+  
+  //セーブ終了時のevent.
+  Action OnSaveFinishedHandler;
+  
+  //ロード終了時のevent.
+  Action OnLoadFinishedHandler;
+  
+  //セーブデータ作成時のevent.
+  Action OnSaveDataCreatedHandler;
   ```
   
 <a id="CsvReader"></a>
