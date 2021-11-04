@@ -411,6 +411,9 @@ Unity向けの汎用ライブラリです.
   //ロードする.
   void Load(Action onLoadFinishedCallback = null);
   
+  //セーブデータを作成する.
+  void CreateSaveData(Action onSaveDataCreatedCallback = null);
+  
   //セーブ終了時のevent.
   Action OnSaveFinishedHandler;
   
