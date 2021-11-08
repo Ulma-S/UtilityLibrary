@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace RitsGameSeminar.AI.BehaviourTree {
     /// <summary>
@@ -15,6 +16,10 @@ namespace RitsGameSeminar.AI.BehaviourTree {
         /// 処理を実行するメソッド.
         /// </summary>
         public void Execute() {
+            if (m_rootNode == null) {
+                return;
+            }
+            
             //結果が返ってきたらリセットする.
             if (NodeStatusMap[m_rootNode.nodeID] == ENodeStatus.Success ||
                 NodeStatusMap[m_rootNode.nodeID] == ENodeStatus.Failure) {

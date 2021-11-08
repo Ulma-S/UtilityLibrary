@@ -89,6 +89,9 @@ namespace RitsGameSeminar.Sample {
         /// </summary>
         /// <param name="onSaveFinishedCallback">セーブ完了時のコールバック.</param>
         public void Save(Action onSaveFinishedCallback = null) {
+            if (SaveData == null) {
+                return;
+            }
             if (m_enableEncryption) {
                 using (var memoryStream = new MemoryStream()) {
                     var formatter = new BinaryFormatter();

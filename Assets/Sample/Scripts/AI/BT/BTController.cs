@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RitsGameSeminar.AI.BehaviourTree;
 using UnityEngine;
 
@@ -18,16 +19,16 @@ namespace RitsGameSeminar.Sample {
             var buyJuiceTask = new TaskNode(m_btSystem, BuyJuice);
             var buyWaterTask = new TaskNode(m_btSystem, BuyWater);
 
-            var rootNode = new SequenceNode(m_btSystem, new Node[] {
-                new SelectorNode(m_btSystem, new Node[] {
+            var rootNode = new SequenceNode(m_btSystem, new List<Node> {
+                new SelectorNode(m_btSystem, new List<Node> {
                     new DecoratorNode(m_btSystem, goToShopTask, HasMoney),
-                    new SequenceNode(m_btSystem, new Node[] {
+                    new SequenceNode(m_btSystem, new List<Node> {
                         goToBankTask,
                         goToShopTask,
                     })
                 }),
-                new SequenceNode(m_btSystem, new Node[] {
-                    new SelectorNode(m_btSystem, new Node[] {
+                new SequenceNode(m_btSystem, new List<Node> {
+                    new SelectorNode(m_btSystem, new List<Node> {
                         buyJuiceTask,
                         buyWaterTask,
                     }),
