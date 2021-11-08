@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace RitsGameSeminar.AI.BehaviourTree {
     /// <summary>
@@ -71,8 +70,11 @@ namespace RitsGameSeminar.AI.BehaviourTree {
         public void RemoveSubNode(Node node) {
             m_nodes.Remove(node);
         }
-        
 
+        public void RemoveAllNodes() {
+            m_nodes.Clear();
+        }
+        
         public override void Reset() {
             //sub nodeをリセット.
             foreach (var node in m_nodes) {
