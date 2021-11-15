@@ -8,9 +8,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Sample/Scenes/Title.unity
     guid: d12ae0864c0cbdf46876be74223ea660
-  - enabled: 1
-    path: Assets/Sample/StateMachine/StateMachineSample.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Sample/Scenes/Game.unity
     guid: b07652c9ba62f0e4a966b7c3e2b642af
@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Sample/Scenes/Manager.unity
     guid: 3d42bacb8dfaef64f96e756d86f9d318
+  - enabled: 1
+    path: Assets/Sample/Scenes/Game_AI.unity
+    guid: e7986df017cbe7741bc07b774766c7c6
   m_configObjects: {}

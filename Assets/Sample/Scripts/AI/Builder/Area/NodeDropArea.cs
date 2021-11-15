@@ -26,18 +26,22 @@ namespace RitsGameSeminar.Sample {
                         if (m_parentArea.DraggableNode.NodeType == EDraggableNodeType.Selector ||
                             m_parentArea.DraggableNode.NodeType == EDraggableNodeType.Sequence) {
 
-                            if (node.NodeType == EDraggableNodeType.Task) {
-                                if (node.TryGetComponent(out IActionable actionable)) {
-                                    Node = new TaskNode(m_behaviourBuilder.BtSystem, actionable.DoAction);
-                                }
+                            switch (node.NodeType) {
+                                case EDraggableNodeType.Sequence:
+                                    Node = new SequenceNode(m_behaviourBuilder.BtSystem, new List<Node>());
+                                    break;
+                                
+                                case EDraggableNodeType.Selector:
+                                    Node = new SelectorNode(m_behaviourBuilder.BtSystem, new List<Node>());
+                                    break;
+                                
+                                case EDraggableNodeType.Task:
+                                    if (node.TryGetComponent(out IActionable actionable)) {
+                                        Node = new TaskNode(m_behaviourBuilder.BtSystem, actionable.DoAction);
+                                    }
+                                    break;
                             }
-                            else if(node.NodeType == EDraggableNodeType.Sequence) {
-                                Node = new SequenceNode(m_behaviourBuilder.BtSystem, new List<Node>());
-                            }
-                            else if (node.NodeType == EDraggableNodeType.Selector) {
-                                Node = new SelectorNode(m_behaviourBuilder.BtSystem, new List<Node>());
-                            }
-                            
+                       
                             switch (m_parentArea.DraggableNode.NodeType) {
                                 case EDraggableNodeType.Sequence:
                                 {

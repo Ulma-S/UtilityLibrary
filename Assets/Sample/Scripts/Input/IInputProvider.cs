@@ -7,5 +7,6 @@ namespace RitsGameSeminar.Sample {
         public bool IsShootButtonDown { get; }
         public bool IsEscapeButtonDown { get; }
         public bool IsReturnButtonDown { get; }
+        public bool IsSettingButtonDown { get; }
     }
 }

@@ -2,15 +2,14 @@ using RitsGameSeminar.AI.BehaviourTree;
 using UnityEngine;
 
 namespace RitsGameSeminar.Sample {
-    public class AICharacterController : MonoBehaviour {
+    public class EnemyBehaviourController : MonoBehaviour {
         private BehaviourTreeSystem m_btSystem;
         
         private void Start() {
             m_btSystem = new BehaviourTreeSystem();
-            
+
             FindObjectOfType<AIBehaviourBuilder>().BtSystem = m_btSystem;
             
-            //ルートノードを設定.
             m_btSystem.SetRoot(null);
         }
 

@@ -22,7 +22,7 @@ namespace RitsGameSeminar.Sample {
         }
 
         private void Update() {
-            if (m_inputProvider.IsEscapeButtonDown) {
+            if (m_inputProvider.IsSettingButtonDown) {
                 if (m_isOpen) {
                     Close();
                 }

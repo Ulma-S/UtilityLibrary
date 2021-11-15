@@ -63,5 +63,5 @@ MonoBehaviour:
     - Title
   - StageID: 2
     SceneList:
-    - Game
+    - Game_AI
     - GameUI

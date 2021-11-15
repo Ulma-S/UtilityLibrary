@@ -9,6 +9,7 @@ namespace RitsGameSeminar.Sample {
         public bool IsShootButtonDown { get; private set; }
         public bool IsEscapeButtonDown { get; private set; }
         public bool IsReturnButtonDown { get; private set; }
+        public bool IsSettingButtonDown { get; private set; }
 
         private void Update() {
             HorizontalInput = Input.GetAxisRaw("Horizontal");
@@ -18,6 +19,7 @@ namespace RitsGameSeminar.Sample {
             IsShootButtonDown = Input.GetKeyDown(KeyCode.J);
             IsEscapeButtonDown = Input.GetKeyDown(KeyCode.Escape);
             IsReturnButtonDown = Input.GetKeyDown(KeyCode.Return);
+            IsSettingButtonDown = Input.GetKeyDown(KeyCode.P);
         }
     }
 }
