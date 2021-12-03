@@ -17,9 +17,8 @@ namespace RitsGameSeminar.Sample {
             }
 
             m_inputProvider = ServiceLocator.Resolve<IInputProvider>();
-            
-            Close();
         }
+        
 
         private void Update() {
             if (m_inputProvider.IsSettingButtonDown) {
@@ -31,26 +30,26 @@ namespace RitsGameSeminar.Sample {
                 }
             }
         }
+        
 
-        private void Open() {
+        public void Open() {
             foreach (var component in m_uiComponents) {
                 if (component == null) {
                     continue;
                 }
                 component.SetActive(true);
             }
-
             m_isOpen = true;
         }
+        
 
-        private void Close() {
+        public void Close() {
             foreach (var component in m_uiComponents) {
                 if (component == null) {
                     continue;
                 }
                 component.SetActive(false);
             }
-
             m_isOpen = false;
         }
     }

@@ -9,7 +9,7 @@ namespace RitsGameSeminar.Sample {
         private ShockWaveController m_shockWaveController;
         private bool m_isStarted = false;
         private bool m_isFinished = false;
-        private float m_effectDuration = 5f;
+        private float m_effectDuration = 2f;
 
         private void Start() {
             m_enemy = GameObject.FindWithTag("Enemy");
@@ -32,10 +32,10 @@ namespace RitsGameSeminar.Sample {
         
         private IEnumerator JumpCoroutine() {
             var originY = m_enemy.transform.position.y;
-            var velocity = Vector3.up * 20f;
+            var velocity = Vector3.up * 30f;
             while (true) {
                 m_enemy.transform.Translate(velocity * Time.deltaTime);
-                velocity.y -= 0.1f;
+                velocity.y -= 0.2f;
                 yield return null;
                 if (velocity.y <= 0f) {
                     break;

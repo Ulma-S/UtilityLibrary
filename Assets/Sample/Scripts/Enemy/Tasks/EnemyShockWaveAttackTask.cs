@@ -7,7 +7,7 @@ namespace RitsGameSeminar.Sample {
         public override EEnemyTaskType TaskType { get; } = EEnemyTaskType.ShockWaveAttack;
         private readonly ShockWaveController m_shockWaveController;
         private bool m_isFinished = false;
-        private float m_effectDuration = 5f;
+        private float m_effectDuration = 2f;
         
         public EnemyShockWaveAttackTask(GameObject owner) : base(owner) {
             m_shockWaveController = Object.FindObjectOfType<ShockWaveController>();
@@ -26,10 +26,10 @@ namespace RitsGameSeminar.Sample {
 
         private IEnumerator JumpCoroutine() {
             var originY = owner.transform.position.y;
-            var velocity = Vector3.up * 20f;
+            var velocity = Vector3.up * 30f;
             while (true) {
                 owner.transform.Translate(velocity * Time.deltaTime);
-                velocity.y -= 0.1f;
+                velocity.y -= 0.2f;
                 yield return null;
                 if (velocity.y <= 0f) {
                     break;
