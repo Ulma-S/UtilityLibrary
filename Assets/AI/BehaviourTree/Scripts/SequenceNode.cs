@@ -5,7 +5,7 @@ namespace RitsGameSeminar.AI.BehaviourTree {
     /// SubNodeを順に実行するnode.
     /// </summary>
     public class SequenceNode : Node {
-        private readonly List<Node> m_nodes;
+        private readonly List<Node> m_subNodes;
         
         /// <summary>
         /// 現在実行されているsub node.
@@ -17,14 +17,14 @@ namespace RitsGameSeminar.AI.BehaviourTree {
         /// </summary>
         private int m_currentSubNodeIdx;
         
-        public SequenceNode(BehaviourTreeSystem btSystem, List<Node> nodes) : base(btSystem) {
-            m_nodes = nodes;
+        public SequenceNode(BehaviourTreeSystem btSystem, List<Node> subNodes) : base(btSystem) {
+            m_subNodes = subNodes;
             m_currentSubNodeIdx = 0;
-            if (m_nodes.Count == 0) {
+            if (m_subNodes.Count == 0) {
                 m_currentSubNode = null;
             }
             else {
-                m_currentSubNode = m_nodes[0];
+                m_currentSubNode = m_subNodes[0];
             }
         }
 
@@ -40,9 +40,9 @@ namespace RitsGameSeminar.AI.BehaviourTree {
             //現在のnodeがSuccessなら
             if (btSystem.NodeStatusMap[m_currentSubNode.nodeID] == ENodeStatus.Success) {
                 //次のnodeが存在していればnodeを移行する.
-                if (m_currentSubNodeIdx + 1 < m_nodes.Count) {
+                if (m_currentSubNodeIdx + 1 < m_subNodes.Count) {
                     m_currentSubNodeIdx++;
-                    m_currentSubNode = m_nodes[m_currentSubNodeIdx];
+                    m_currentSubNode = m_subNodes[m_currentSubNodeIdx];
                 }
                 //現在のnodeが最後ならSequence nodeをSuccessにする.
                 else {
@@ -64,30 +64,30 @@ namespace RitsGameSeminar.AI.BehaviourTree {
         }
 
         public void AddSubNode(Node node) {
-            m_nodes.Add(node);
+            m_subNodes.Add(node);
         }
 
         public void RemoveSubNode(Node node) {
-            m_nodes.Remove(node);
+            m_subNodes.Remove(node);
         }
 
         public void RemoveAllNodes() {
-            m_nodes.Clear();
+            m_subNodes.Clear();
         }
         
         public override void Reset() {
             //sub nodeをリセット.
-            foreach (var node in m_nodes) {
+            foreach (var node in m_subNodes) {
                 node?.Reset();
             }
             
             //Sequence nodeをリセット.
             m_currentSubNodeIdx = 0;
-            if (m_nodes.Count == 0) {
+            if (m_subNodes.Count == 0) {
                 m_currentSubNode = null;
             }
             else {
-                m_currentSubNode = m_nodes[0];
+                m_currentSubNode = m_subNodes[0];
             }
         }
     }

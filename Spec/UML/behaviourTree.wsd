@@ -1,0 +1,14 @@
+@startuml Behaviour Tree
+title "Behaviour Tree"
+class BehaviourTreeSystem{}
+class Node{
+    + void Execute()
+}
+class TaskNode{}
+class SequenceNode{}
+class SelectorNode{}
+BehaviourTreeSystem -- Node
+Node <|-- TaskNode
+Node <|-- SequenceNode
+Node <|-- SelectorNode
+@enduml

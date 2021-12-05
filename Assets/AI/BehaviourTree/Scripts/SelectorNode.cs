@@ -5,18 +5,18 @@ namespace RitsGameSeminar.AI.BehaviourTree {
     /// SubNodeのいずれか一つを実行するnode.
     /// </summary>
     public class SelectorNode : Node {
-        private readonly List<Node> m_nodes;
+        private readonly List<Node> m_subNodes;
         private Node m_currentSubNode;
         private int m_currentSubNodeIdx = 0;
         
-        public SelectorNode(BehaviourTreeSystem btSystem, List<Node> nodes) : base(btSystem) {
-            m_nodes = nodes;
+        public SelectorNode(BehaviourTreeSystem btSystem, List<Node> subNodes) : base(btSystem) {
+            m_subNodes = subNodes;
             m_currentSubNodeIdx = 0;
-            if (nodes.Count == 0) {
+            if (subNodes.Count == 0) {
                 m_currentSubNode = null;
             }
             else {
-                m_currentSubNode = m_nodes[m_currentSubNodeIdx];
+                m_currentSubNode = m_subNodes[m_currentSubNodeIdx];
             }
         }
 
@@ -38,9 +38,9 @@ namespace RitsGameSeminar.AI.BehaviourTree {
             //現在のnodeがFailureなら
             if (btSystem.NodeStatusMap[m_currentSubNode.nodeID] == ENodeStatus.Failure) {
                 //次のnodeが存在すればnodeを移行する.
-                if (m_currentSubNodeIdx + 1 < m_nodes.Count) {
+                if (m_currentSubNodeIdx + 1 < m_subNodes.Count) {
                     m_currentSubNodeIdx++;
-                    m_currentSubNode = m_nodes[m_currentSubNodeIdx];
+                    m_currentSubNode = m_subNodes[m_currentSubNodeIdx];
                 }
                 //現在のnodeが最後ならSelector nodeをFailureにする.
                 else {
@@ -53,26 +53,26 @@ namespace RitsGameSeminar.AI.BehaviourTree {
         }
 
         public void AddSubNode(Node node) {
-            m_nodes.Add(node);
+            m_subNodes.Add(node);
         }
 
         public void RemoveSubNode(Node node) {
-            m_nodes.Remove(node);
+            m_subNodes.Remove(node);
         }
 
         public override void Reset() {
             //sub nodeをリセット.
-            foreach (var node in m_nodes) {
+            foreach (var node in m_subNodes) {
                 node?.Reset();
             }
             
             //Selector nodeをリセット.
             m_currentSubNodeIdx = 0;
-            if (m_nodes.Count == 0) {
+            if (m_subNodes.Count == 0) {
                 m_currentSubNode = null;
             }
             else {
-                m_currentSubNode = m_nodes[0];
+                m_currentSubNode = m_subNodes[0];
             }
         }
     }
